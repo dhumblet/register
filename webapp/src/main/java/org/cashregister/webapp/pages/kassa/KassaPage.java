@@ -275,9 +275,15 @@ public class KassaPage extends SecureTemplatePage {
                 super.onSubmit(target, form);
                 if (BigDecimalHelper.isNotZero(model.getObject().getTotal())) {
                     target.prependJavaScript(Modal.showAndFocus(totalAmountModal, totalAmountField));
-                    totalInputAmount = null;
-                    returnAmount = null;
-                    payButton.setVisible(false);
+                    if (BigDecimalHelper.isPositiveAmount(model.getObject().getTotal())) {
+                        totalInputAmount = null;
+                        returnAmount = null;
+                        payButton.setVisible(false);
+                    } else {
+                        totalInputAmount = BigDecimal.ZERO;
+                        returnAmount = totalInputAmount.subtract(model.getObject().getTotal());
+                        payButton.setVisible(true);
+                    }
                     target.add(totalAmountForm, container);
                 } else {
                     target.appendJavaScript("$(\"#product\").focus();");
