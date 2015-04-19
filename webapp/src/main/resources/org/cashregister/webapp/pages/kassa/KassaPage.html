@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:extend>
+
+    <div class="row" wicket:id="container">
+        <form id="inputForm" wicket:id="input-form">
+        <span wicket:id="feedback"></span>
+        <!-- INPUT -->
+        <div class="col-lg-2">
+            <!-- CATEGORY BUTTONS -->
+            <div class="form-group">
+                <button wicket:id="categoryButtons" type="button">
+                    <label wicket:id="buttonLabel"/>
+                </button>
+            </div>
+            <!-- SERIAL INPUT -->
+            <div class="form-group">
+                <input class="form-control" id="product" wicket:id="product">
+            </div>
+        </div>
+
+        <!-- ITEMS TABEL -->
+        <div class="col-lg-9" style="overflow-x: auto">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover" wicket:id="items">
+                    <thead>
+                    <tr>
+                        <th><wicket:message key="table.header.amount"/></th>
+                        <th><wicket:message key="table.header.product"/></th>
+                        <th><wicket:message key="table.header.price"/></th>
+                        <th><wicket:message key="table.header.total"/></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr wicket:id="productRow">
+                        <td><label wicket:id="productCount"/></td>
+                        <td><label wicket:id="productName"/></td>
+                        <td><label wicket:id="productPrice"/></td>
+                        <td><label wicket:id="productTotal"/></td>
+                        <td style="padding: 4px; text-align: center;">
+                            <form wicket:id="itemsForm">
+                            <button type="button" class="btn btn-danger btn-circle" wicket:id="productRemove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                            </form>
+                        </td>
+
+                        <td style="padding: 4px; text-align: center;" wicket:id="truckParent">
+                            <form wicket:id="truckForm">
+                                <button type="button" class="btn btn-default btn-circle" wicket:id="productTruck">
+                                    <i class="fa fa-truck"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <button type="button" id="totalButton" wicket:id="totalButton" class="btn btn-success btn-lg btn-block">
+                <wicket:message key="button.pay"/> <label wicket:id="totalLabel"/>
+            </button>
+        </div>
+        </form>
+
+        <!--<embed wicket:id="applet" type="application/x-java-applet;version=1.6" width="100" height="200" archive="applet.jar" code="Applet.class" pluginspage="http://java.com/download/"/>-->
+        <!--&lt;!&ndash;<applet wicket:id="applet" code="Applet.class" archive="applet.jar" width="100" height="200"/>&ndash;&gt;-->
+        <!--<div wicket:id="appletDiv"/>-->
+    </div>
+
+
+
+    <!-- CATEGORY AMOUNT MODAL -->
+    <div wicket:id="categoryAmountModal" class="modal fade" id="categoryAmountModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form wicket:id="category-form">
+                    <div class="modal-header">
+                        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                        <h4 class="modal-title" id="myModalLabel"><wicket:message key="modal.category.title"/></h4>
+                    </div>
+                    <div class="modal-body">
+                        <span wicket:id="categoryFeedback"></span>
+                        <input type="number" class="form-control" id="categoryAmount" wicket:id="categoryAmount">
+                    </div>
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" wicket:id="closeCategory"><wicket:message key="button.close"/></button>
+                        <button type="submit" class="btn btn-primary" wicket:id="addCategory"><wicket:message key="button.ok"/></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOTAL AMOUNT MODAL -->
+    <div wicket:id="totalAmountModal" class="modal fade" id="totalAmountModal" tabindex="-1" role="dialog" aria-labelledby="myTotalModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form wicket:id="total-form">
+                    <div class="modal-header">
+                        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                        <h4 class="modal-title" id="myTotalModalLabel"><wicket:message key="modal.total.title"/></h4>
+                    </div>
+                    <div class="modal-body">
+                        <span wicket:id="totalFeedback"></span>
+                        <table>
+                            <tr>
+                                <td style="padding-right: 20px;"><wicket:message key="modal.total.pay"/></td>
+                                <td><label wicket:id="totalAmount"/></td>
+                            </tr>
+                            <tr>
+                                <td style="padding-right: 20px;"><wicket:message key="modal.total.given"/></td>
+                                <td><input type="number" id="totalAmountInput" wicket:id="totalAmountInput" style="max-width: 100px;"></td>
+                            </tr>
+                            <tr><td colspan="2"><hr></td></tr>
+                            <tr>
+                                <td style="padding-right: 20px;"><wicket:message key="modal.total.return"/></td>
+                                <td><label class="important-text" wicket:id="returnAmount"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" wicket:id="closeTotal"><wicket:message key="button.close"/></button>
+                        <button type="submit" class="btn btn-primary" wicket:id="finishTransaction"><wicket:message key="button.ok"/></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW PRODUCT MODAL -->
+    <div wicket:id="productModal" class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="myProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form wicket:id="product-form">
+                    <div class="modal-header">
+                        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
+                        <h4 class="modal-title" id="myProductModalLabel"><wicket:message key="modal.product"/></h4>
+                    </div>
+                    <div class="modal-body">
+                        <span wicket:id="productFeedback"></span>
+                        <table style="width: 75%;">
+                            <tr>
+                                <td class="spacing right"><wicket:message key="table.header.barcode"/></td>
+                                <td class="spacing"><input wicket:id="serial" id="serial" type="text" class="form-control"/></td>
+                            </tr>
+
+                            <tr>
+                                <td class="spacing right"><wicket:message key="table.header.name"/></td>
+                                <td class="spacing"><input wicket:id="name" id="name" type="text" class="form-control"/></td>
+                            </tr>
+                            <tr>
+                                <td class="spacing right"><wicket:message key="table.header.category"/></td>
+                                <td class="spacing"><select wicket:id="category" id="category" class="form-control"/></td>
+                            </tr>
+                            <tr>
+                                <td class="spacing right"><wicket:message key="table.header.price"/></td>
+                                <td class="spacing"><input wicket:id="price" id="price" type="text" class="form-control"/></td>
+                            </tr>
+
+                        </table>
+                    </div>
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" wicket:id="closeProduct"><wicket:message key="button.close"/></button>
+                        <button type="submit" class="btn btn-primary" wicket:id="saveProduct"><wicket:message key="button.ok"/></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</wicket:extend>
+</body>
+</html>

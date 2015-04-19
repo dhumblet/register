@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration debug="true">
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.EnhancedPatternLayout">
+            <param name="ConversionPattern" value="[%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}{CET}] [%5p] [%c{1}:%L] [%t] [PROTO-CORR:%X{PROTO.CORR}] [%m] %n" />
+        </layout>
+    </appender>
+
+    <logger name="org.cashregister.webapp" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="stdout" />
+    </logger>
+
+    <logger name="org.hibernate.SQL" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="stdout" />
+    </logger>
+
+    <logger name="org.hibernate.type" additivity="false">
+        <level value="INFO" />
+        <appender-ref ref="stdout" />
+    </logger>
+
+    <root>
+        <priority value="ERROR" />
+        <appender-ref ref="stdout" />
+    </root>
+
+</log4j:configuration>

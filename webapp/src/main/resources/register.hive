@@ -1,0 +1,11 @@
+grant principal org.wicketstuff.security.hive.authorization.SimplePrincipal "SELL"
+{
+	permission ${ComponentPermission} "${kassa}", "enable";
+	permission ${ComponentPermission} "${kassa}", "inherit, render";
+	permission ${ComponentPermission} "${products}", "inherit, render";
+    permission ${ComponentPermission} "${products}", "enable";
+    permission ${ComponentPermission} "${transactions}", "inherit, render";
+    permission ${ComponentPermission} "${transactions}", "enable";
+    permission ${ComponentPermission} "${overview}", "inherit, render";
+    permission ${ComponentPermission} "${overview}", "enable";
+};

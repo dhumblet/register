@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org/">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Derk Humblet">
+
+    <title>Kassa</title>
+
+    <wicket:container wicket:id="pageStyleSheets">
+        <link rel="stylesheet" wicket:id="sheet">
+    </wicket:container>
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0" >
+            <div wicket:id="merchantHeader">
+                <div class="navbar-header" style="float: left;">
+                    <span class="navbar-brand" wicket:id="merchantName"/>
+                </div>
+                <div class="navbar-header" style="float: right;">
+                    <span class="navbar-brand" wicket:id="headerDate"/>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li><a href="#" wicket:id="logoutLink"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse" wicket:id="navigation">
+                    <ul class="nav" id="side-menu">
+                        <li><a class="active" href="index.html" wicket:id="kassa"><i class="fa fa-shopping-cart fa-fw"></i>
+                            <wicket:message key="menu.kassa"/>
+                        </a></li>
+                        <li><a class="active" href="index.html" wicket:id="products"><i class="fa fa-list fa-fw"></i>
+                            <wicket:message key="menu.products"/>
+                        </a></li>
+                        <li><a class="active" href="index.html" wicket:id="transactions"><i class="fa fa-eur fa-fw"></i>
+                            <wicket:message key="menu.transactions"/>
+                        </a></li>
+                        <li><a class="active" href="index.html" wicket:id="overview"><i class="fa fa-eur fa-fw"></i>
+                            <wicket:message key="menu.stats"/>
+                        </a></li>
+                        <!--<li><a class="active" href="index.html"><i class="fa fa-signal fa-fw"></i><wicket:message key="menu.overview"/></a></li>-->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" >
+            <div class="row" id="non-printable">
+                <div class="col-lg-13">
+                    <h2 class="page-header"><span wicket:id="title"/></h2>
+                </div>
+            </div>
+            <div class="content-wrapper">
+                <wicket:child/>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JS Page Style -->
+    <wicket:container wicket:id="javascriptPagesImports">
+        <script type="text/javascript" wicket:id="import"></script>
+    </wicket:container>
+</body>
+</html>
