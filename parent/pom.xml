@@ -9,8 +9,8 @@
     <version>1.2-SNAPSHOT</version>
 
     <parent>
-        <groupId>testregister</groupId>
-        <artifactId>testregister</artifactId>
+        <groupId>register</groupId>
+        <artifactId>register</artifactId>
         <version>1.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
