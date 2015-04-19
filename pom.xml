@@ -2,11 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>testregister</groupId>
-	<artifactId>testregister</artifactId>
+	<groupId>register</groupId>
+	<artifactId>register</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0</version>
-	<name>testregister</name>
+	<name>register</name>
 
 	<modules>
 		<module>parent</module>
@@ -73,7 +73,7 @@
 			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
 			<id>openshift</id>
 			<build>
-				<finalName>testregister</finalName>
+				<finalName>register</finalName>
 				<plugins>
 					<plugin>
 						<artifactId>maven-war-plugin</artifactId>
