@@ -273,7 +273,7 @@ public class KassaPage extends SecureTemplatePage {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
-                if (BigDecimalHelper.isNotZero(model.getObject().getTotal())) {
+                if (!model.getObject().getItems().isEmpty()) {
                     target.prependJavaScript(Modal.showAndFocus(totalAmountModal, totalAmountField));
                     if (BigDecimalHelper.isPositiveAmount(model.getObject().getTotal())) {
                         totalInputAmount = null;
