@@ -18,8 +18,9 @@ import org.cashregister.webapp.RegisterSession;
 import org.cashregister.webapp.login.LoginHandler;
 import org.cashregister.webapp.pages.kassa.KassaPage;
 import org.cashregister.webapp.pages.login.LoginPage;
-import org.cashregister.webapp.pages.product.ProductPage;
 import org.cashregister.webapp.pages.overview.OverviewPage;
+import org.cashregister.webapp.pages.product.ProductPage;
+import org.cashregister.webapp.pages.statistics.StatisticsPage;
 import org.cashregister.webapp.pages.transaction.TransactionPage;
 
 import java.text.SimpleDateFormat;
@@ -112,6 +113,7 @@ public abstract class TemplatePage extends WebPage {
         addNavigation("products", ProductPage.class);
         addNavigation("transactions", TransactionPage.class);
         addNavigation("overview", OverviewPage.class);
+        addNavigation("statistics", StatisticsPage.class);
     }
 
     private void addNavigation(String id, final Class<? extends Page> resultPage) {

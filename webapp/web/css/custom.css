@@ -131,13 +131,16 @@ th.right{
 }
 
 #statsstartdate {
-    min-width: 300px;
+    min-width: 250px;
 }
 
 #statsenddate {
-    min-width: 300px;
+    min-width: 250px;
 }
 
+span.yui-skin-sam {
+    width: 0;
+}
 
 @media screen
 {
@@ -149,4 +152,23 @@ th.right{
     .non-printable { display: none; visibility: hidden; }
     .only-printable { display: block; visibility: visible; }
     #page-wrapper {margin: 0;}
+}
+
+/* ChartJS fixes */
+
+.chart {
+    width: 100%;
+    height: 100%;
+}
+
+/* Outline buttons */
+
+.btn-custom-blue {
+    color: #428bca;
+    background-color: transparent;
+    border-color: #428bca;
+}
+
+.btn-custom-blue:hover {
+    color: #428bca;
 }

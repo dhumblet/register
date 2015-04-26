@@ -15,6 +15,7 @@ import org.cashregister.webapp.pages.kassa.KassaPage;
 import org.cashregister.webapp.pages.login.LoginPage;
 import org.cashregister.webapp.pages.product.ProductPage;
 import org.cashregister.webapp.pages.overview.OverviewPage;
+import org.cashregister.webapp.pages.statistics.StatisticsPage;
 import org.cashregister.webapp.pages.transaction.TransactionPage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,7 @@ public class CashRegisterApplication extends SwarmWebApplication {
         mountPage("/products", ProductPage.class);
         mountPage("/transactions", TransactionPage.class);
         mountPage("/overview", OverviewPage.class);
+        mountPage("/statistics", StatisticsPage.class);
         mountPage("/login", LoginPage.class);
         mountPage("/error", ErrorPage.class);
         mountPage("/error/${http}", ErrorPage.class);
@@ -88,6 +90,7 @@ public class CashRegisterApplication extends SwarmWebApplication {
         factory.setAlias("products", ProductPage.class.getName());
         factory.setAlias("transactions", TransactionPage.class.getName());
         factory.setAlias("overview", OverviewPage.class.getName());
+        factory.setAlias("statistics", StatisticsPage.class.getName());
         factory.addPolicyFile(getClass().getResource("/register.hive"));
         HiveMind.registerHive(getHiveKey(), factory);
     }

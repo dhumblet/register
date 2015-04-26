@@ -8,4 +8,6 @@ grant principal org.wicketstuff.security.hive.authorization.SimplePrincipal "SEL
     permission ${ComponentPermission} "${transactions}", "enable";
     permission ${ComponentPermission} "${overview}", "inherit, render";
     permission ${ComponentPermission} "${overview}", "enable";
+    permission ${ComponentPermission} "${statistics}", "inherit, render";
+    permission ${ComponentPermission} "${statistics}", "enable";
 };
