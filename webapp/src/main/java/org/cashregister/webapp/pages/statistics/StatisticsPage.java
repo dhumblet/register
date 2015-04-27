@@ -112,8 +112,8 @@ public class StatisticsPage extends SecureTemplatePage {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
-                startDate.setObject(DateHelper.getStartOfDay(new Date()));
-                endDate.setObject(DateHelper.getEndOfDay(new Date()));
+                startDate.setObject(getFirstOfToday());
+                endDate.setObject(getLastOfToday());
                 target.add(container);
             }
         });
@@ -188,6 +188,14 @@ public class StatisticsPage extends SecureTemplatePage {
 
     private Date getLastOfThisWeek() {
         return new DateMidnight().withDayOfWeek(1).plusWeeks(1).toDateTime().minusMillis(1).toDate();
+    }
+
+    private Date getFirstOfToday() {
+        return new DateMidnight().toDate();
+    }
+
+    private Date getLastOfToday() {
+        return new DateMidnight().plusDays(1).toDateTime().minusMillis(1).toDate();
     }
 
     private void updateDates(boolean prev) {
