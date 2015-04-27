@@ -179,7 +179,7 @@ public class StatisticsPage extends SecureTemplatePage {
     }
 
     private Date getLastOfThisMonth() {
-        return new DateMidnight().withDayOfMonth(1).plusMonths(1).toDateTime().minusMillis(1).toDate();
+        return new DateMidnight().withDayOfMonth(1).plusMonths(1).toDateTime().minusSeconds(1).toDate();
     }
 
     private Date getFirstOfThisWeek() {
@@ -187,7 +187,7 @@ public class StatisticsPage extends SecureTemplatePage {
     }
 
     private Date getLastOfThisWeek() {
-        return new DateMidnight().withDayOfWeek(1).plusWeeks(1).toDateTime().minusMillis(1).toDate();
+        return new DateMidnight().withDayOfWeek(1).plusWeeks(1).toDateTime().minusSeconds(1).toDate();
     }
 
     private Date getFirstOfToday() {
@@ -195,7 +195,7 @@ public class StatisticsPage extends SecureTemplatePage {
     }
 
     private Date getLastOfToday() {
-        return new DateMidnight().plusDays(1).toDateTime().minusMillis(1).toDate();
+        return new DateMidnight().plusDays(1).toDateTime().minusSeconds(1).toDate();
     }
 
     private void updateDates(boolean prev) {
