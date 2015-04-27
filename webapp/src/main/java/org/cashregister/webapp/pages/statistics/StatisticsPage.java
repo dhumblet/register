@@ -60,6 +60,7 @@ public class StatisticsPage extends SecureTemplatePage {
         initDatePicker(false);
         initButton(true);
         initButton(false);
+        initShortcutButtons();
     }
 
     private void initDatePicker(final boolean start) {
@@ -74,8 +75,13 @@ public class StatisticsPage extends SecureTemplatePage {
             @Override
             protected void onUpdate(AjaxRequestTarget target) {
                 if (startDate.getObject().after(endDate.getObject())) {
-                    //When the startdate is greater than the enddate, set the enddate to the same day
-                    endDate.setObject(DateHelper.getEndOfDay(startDate.getObject()));
+
+                    if (start) {
+                        //When the startdate is greater than the enddate, set the enddate to the same day
+                        endDate.setObject(DateHelper.getEndOfDay(startDate.getObject()));
+                    } else {
+                        startDate.setObject(DateHelper.getStartOfDay(endDate.getObject()));
+                    }
                 }
                 if (!start) {
                     endDate.setObject(DateHelper.getEndOfDay(endDate.getObject()));
@@ -98,6 +104,38 @@ public class StatisticsPage extends SecureTemplatePage {
             }
         }.setOutputMarkupId(true));
         container.add(form.setOutputMarkupId(true));
+    }
+
+    private void initShortcutButtons() {
+        Form shortcutsForm = new Form("shortcutForm");
+        shortcutsForm.add(new AjaxButton("shortcutToday", shortcutsForm) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                startDate.setObject(DateHelper.getStartOfDay(new Date()));
+                endDate.setObject(DateHelper.getEndOfDay(new Date()));
+                target.add(container);
+            }
+        });
+        shortcutsForm.add(new AjaxButton("shortcutWeek", shortcutsForm) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                startDate.setObject(getFirstOfThisWeek());
+                endDate.setObject(getLastOfThisWeek());
+                target.add(container);
+            }
+        });
+        shortcutsForm.add(new AjaxButton("shortcutMonth", shortcutsForm) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                startDate.setObject(getFirstOfThisMonth());
+                endDate.setObject(getLastOfThisMonth());
+                target.add(container);
+            }
+        });
+        container.add(shortcutsForm.setOutputMarkupId(true));
     }
 
     private void addCustomerCount() {
@@ -142,6 +180,14 @@ public class StatisticsPage extends SecureTemplatePage {
 
     private Date getLastOfThisMonth() {
         return new DateMidnight().withDayOfMonth(1).plusMonths(1).toDateTime().minusMillis(1).toDate();
+    }
+
+    private Date getFirstOfThisWeek() {
+        return new DateMidnight().withDayOfWeek(1).toDate();
+    }
+
+    private Date getLastOfThisWeek() {
+        return new DateMidnight().withDayOfWeek(1).plusWeeks(1).toDateTime().minusMillis(1).toDate();
     }
 
     private void updateDates(boolean prev) {

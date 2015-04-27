@@ -7,6 +7,13 @@
 
             <!-- Search dates -->
             <div class="panel-heading non-printable">
+                <div style="text-align: center;">
+                    <form wicket:id="shortcutForm">
+                        <button wicket:id="shortcutToday" type="button" class="btn btn-custom-blue"><wicket:message key="stats.button.today"/></button>
+                        <button wicket:id="shortcutWeek" type="button" class="btn btn-custom-blue"><wicket:message key="stats.button.week"/></button>
+                        <button wicket:id="shortcutMonth" type="button" class="btn btn-custom-blue"><wicket:message key="stats.button.month"/></button>
+                    </form>
+                </div>
                 <div style="float: left;">
                     <form wicket:id="prevForm" style="display: inline-flex;">
                         <button wicket:id="prevButton" type="button" class="btn btn-custom-blue">&lt;</button>
@@ -27,6 +34,7 @@
                 </div>
             </div>
 
+            <br/>
             <br/>
 
             <!-- Turnover of sales -->
