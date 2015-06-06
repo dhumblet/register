@@ -22,6 +22,7 @@ import org.cashregister.webapp.pages.overview.OverviewPage;
 import org.cashregister.webapp.pages.product.ProductPage;
 import org.cashregister.webapp.pages.statistics.StatisticsPage;
 import org.cashregister.webapp.pages.transaction.TransactionPage;
+import org.wicketstuff.security.components.markup.html.links.SecurePageLink;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -117,12 +118,7 @@ public abstract class TemplatePage extends WebPage {
     }
 
     private void addNavigation(String id, final Class<? extends Page> resultPage) {
-        navigation.add(new AjaxLink<String>(id) {
-            @Override
-            public void onClick(AjaxRequestTarget target){
-                setResponsePage(resultPage);
-            }
-        });
+        navigation.add(new SecurePageLink<String>(id, resultPage));
     }
 
     protected List<String> getPageSpecificStyleSheets() {
