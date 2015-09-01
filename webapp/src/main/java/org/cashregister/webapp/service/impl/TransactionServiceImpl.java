@@ -100,7 +100,7 @@ public class TransactionServiceImpl implements TransactionService {
                     category = product.getCategory();
                 }
             } else {
-                category = categoryService.findCategory(item.getName());
+                category = categoryService.findCategory(item.getName(), user.getMerchant().getId());
             }
             TransactionDetail detail = new TransactionDetail(category, transaction, product, item.getAmount(), item.getTotal(), truck);
             detailRepo.createTransactionDetail(detail);

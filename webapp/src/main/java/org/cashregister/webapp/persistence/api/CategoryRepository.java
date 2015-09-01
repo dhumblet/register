@@ -9,7 +9,9 @@ import java.util.List;
  */
 public interface CategoryRepository extends GenericRepository<Category> {
 
-    Category findCategory(String name);
+    Category findCategory(String name, long merchantId);
 
     List<Category> findCategories(long merchantId);
+
+    void removeCategory(Category category);
 }

@@ -241,7 +241,10 @@ public class KassaPage extends SecureTemplatePage {
                     }
                 }.setOutputMarkupPlaceholderTag(true));
                 item.add(itemForm.setOutputMarkupPlaceholderTag(true));
+
+                // TRUCK
                 WebMarkupContainer truckParent = new WebMarkupContainer("truckParent");
+                truckParent.setVisible(getRegisterSession().getUser().getMerchant().isTruck());
                 Form truckForm = new Form("truckForm");
                 truckForm.setEnabled(BigDecimalHelper.isPositiveAmount(item.getModel().getObject().getPrice()));
                 truckForm.setVisible(BigDecimalHelper.isPositiveAmount(item.getModel().getObject().getPrice()));
@@ -260,10 +263,16 @@ public class KassaPage extends SecureTemplatePage {
                 }
                 truckParent.add(truckForm.setOutputMarkupId(true));
                 item.add(truckParent.setOutputMarkupPlaceholderTag(true));
+
                 item.setVisible(item.getModel().getObject().getAmount() > 0);
             }
         };
         items.add(itemsListView.setOutputMarkupId(true));
+
+        //Truck header
+        WebMarkupContainer truckHeader = new WebMarkupContainer("truckHeader");
+        truckHeader.setVisible(getRegisterSession().getUser().getMerchant().isTruck());
+        items.add(truckHeader.setOutputMarkupId(true));
         form.add(items.setOutputMarkupId(true));
     }
 
@@ -313,7 +322,7 @@ public class KassaPage extends SecureTemplatePage {
                 super.onSubmit(target, form);
                 String input = model.getObject().getProduct().replace("\n", "");
                 if (ProductHelper.isCategory(input)) {
-                    Category category = categoryService.findCategory(input);
+                    Category category = categoryService.findCategory(input, getMerchantId());
                     if (category != null && categoryAmount != null && BigDecimalHelper.isNotZero(categoryAmount)) {
                         model.getObject().add(category, categoryAmount);
                         model.getObject().setProduct(null);

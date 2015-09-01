@@ -185,7 +185,8 @@ public class OverviewPage extends SecureTemplatePage {
                 trucksTable.setVisible(!trucksTable.isVisible());
                 target.add(container);
             }
-        }.setOutputMarkupPlaceholderTag(true));
+        }   .setVisible(getRegisterSession().getUser().getMerchant().isTruck())
+            .setOutputMarkupPlaceholderTag(true));
 
         showForm.add(new AjaxButton("showRefunds", showForm) {
             @Override

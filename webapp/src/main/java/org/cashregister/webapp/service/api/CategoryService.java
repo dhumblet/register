@@ -16,7 +16,13 @@ public interface CategoryService {
     /**
      * Search a category based on name
      */
-    Category findCategory(String name);
+    Category findCategory(String name, long merchantId);
+
+    /**
+     * Remove a given category
+     * @param category
+     */
+    void delete(Category category);
 
     /**
      * Retrun a category based on id

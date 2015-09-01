@@ -16,6 +16,7 @@ import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.util.cookies.CookieUtils;
 import org.cashregister.webapp.RegisterSession;
 import org.cashregister.webapp.login.LoginHandler;
+import org.cashregister.webapp.pages.configuration.ConfigurationPage;
 import org.cashregister.webapp.pages.kassa.KassaPage;
 import org.cashregister.webapp.pages.login.LoginPage;
 import org.cashregister.webapp.pages.overview.OverviewPage;
@@ -115,6 +116,7 @@ public abstract class TemplatePage extends WebPage {
         addNavigation("transactions", TransactionPage.class);
         addNavigation("overview", OverviewPage.class);
         addNavigation("statistics", StatisticsPage.class);
+        addNavigation("config", ConfigurationPage.class);
     }
 
     private void addNavigation(String id, final Class<? extends Page> resultPage) {

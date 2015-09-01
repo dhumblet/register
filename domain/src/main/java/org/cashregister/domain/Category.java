@@ -1,6 +1,8 @@
 package org.cashregister.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -13,6 +15,10 @@ public class Category extends GenericEntity implements Serializable {
 
     private String name;
     private String shortcut;
+
+    @ManyToOne
+    @JoinColumn(name="merchantId")
+    private Merchant merchant;
 
     public Category() { }
 
@@ -35,5 +41,13 @@ public class Category extends GenericEntity implements Serializable {
 
     public void setShortcut(String shortcut) {
         this.shortcut = shortcut;
+    }
+
+    public Merchant getMerchant() {
+        return merchant;
+    }
+
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
     }
 }

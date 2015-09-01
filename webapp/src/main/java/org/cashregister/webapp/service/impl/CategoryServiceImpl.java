@@ -30,12 +30,22 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override @Transactional
-    public Category findCategory(String name) {
+    public Category findCategory(String name, long merchantId) {
         try {
-            return repo.findCategory(name);
+            return repo.findCategory(name, merchantId);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override @Transactional
+    public void delete(Category category) {
+        try {
+            repo.removeCategory(category);
+        } catch (Exception e) {
+            repo.getEntityManager().close();
+            e.printStackTrace();
         }
     }
 
