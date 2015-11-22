@@ -7,6 +7,7 @@ import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.cashregister.domain.Transaction;
 import org.cashregister.webapp.service.api.TransactionService;
 
+import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -15,20 +16,23 @@ import java.util.Iterator;
 public class TransactionProvider implements IDataProvider<Transaction> {
     @SpringBean private TransactionService service;
     private long merchantId;
+    private IModel<Date> transactionDate;
 
-    public TransactionProvider(TransactionService service, long merchantId) {
+    public TransactionProvider(TransactionService service, long merchantId, IModel<Date> transactionDate) {
         this.service = service;
         this.merchantId = merchantId;
+        this.transactionDate = transactionDate;
     }
 
     @Override
     public long size() {
-        return service.countTodayTransactions(merchantId);
+        return service.countTodayTransactions(merchantId, transactionDate.getObject());
     }
 
     @Override
     public Iterator<Transaction> iterator(long first, long count) {
-        return service.getTodayTransactions(merchantId).iterator();
+        return service.getTransactionsForDate(merchantId, transactionDate.getObject()).iterator();
+//        return service.getTodayTransactions(merchantId).iterator();
     }
 
     @Override

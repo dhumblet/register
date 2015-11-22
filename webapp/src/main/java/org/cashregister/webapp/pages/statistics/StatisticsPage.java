@@ -135,6 +135,15 @@ public class StatisticsPage extends SecureTemplatePage {
                 target.add(container);
             }
         });
+        shortcutsForm.add(new AjaxButton("shortcutAll", shortcutsForm) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                startDate.setObject(getFirstSaleDate());
+                endDate.setObject(getLastOfToday());
+                target.add(container);
+            }
+        });
         container.add(shortcutsForm.setOutputMarkupId(true));
     }
 
@@ -173,6 +182,10 @@ public class StatisticsPage extends SecureTemplatePage {
     }
 
     /* Date helpers */
+
+    private Date getFirstSaleDate() {
+        return new DateMidnight().withDayOfMonth(1).withMonthOfYear(3).withYear(2015).toDate();
+    }
 
     private Date getFirstOfThisMonth() {
         return new DateMidnight().withDayOfMonth(1).toDate();

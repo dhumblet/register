@@ -25,11 +25,11 @@ public class TransactionsDataView extends DataView<Transaction> {
     @Override
     protected void populateItem(Item<Transaction> item) {
         final Transaction transaction = item.getModelObject();
-        item.add(new Label("date", DateHelper.getDateString(transaction.getDate())));
-        item.add(new Label("time", DateHelper.getTimeString(transaction.getDate())));
-        item.add(new CurrencyLabel("amount", Model.of(transaction.getPrice())));
-        item.add(new CurrencyLabel("given", Model.of(transaction.getReceived())));
-        item.add(new CurrencyLabel("returned", Model.of(transaction.getReturned())));
+        item.add(new Label("date", DateHelper.getDateString(transaction.date())));
+        item.add(new Label("time", DateHelper.getTimeString(transaction.date())));
+        item.add(new CurrencyLabel("amount", Model.of(transaction.price())));
+        item.add(new CurrencyLabel("given", Model.of(transaction.received())));
+        item.add(new CurrencyLabel("returned", Model.of(transaction.returned())));
 
         item.add(new AjaxEventBehavior("onClick") {
             @Override

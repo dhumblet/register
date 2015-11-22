@@ -6,6 +6,7 @@ import org.cashregister.domain.User;
 import org.cashregister.webapp.pages.kassa.RowItem;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,9 +22,11 @@ public interface TransactionService {
      */
     Receipt createTransaction(User user, BigDecimal price, BigDecimal received, BigDecimal returned, List<RowItem> details);
 
-    long countTodayTransactions(long merchantId);
+    long countTodayTransactions(long merchantId, Date day);
 
     List<Transaction> getTodayTransactions(long merchantId);
+
+    List<Transaction> getTransactionsForDate(long merchantId, Date day);
 
     Transaction getTransaction(Long id);
 }

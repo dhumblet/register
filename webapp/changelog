@@ -2,3 +2,7 @@
 * KassaPage layout updated 
 ** Product inputfield is now hidden
 ** Buttons now vertical shown 
+1.3 (21 nov 2015)
+* Added config page (only categories for now)
+* Added roles to users
+* Added names of products/categories to transactions

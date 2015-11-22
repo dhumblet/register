@@ -20,9 +20,9 @@ public class OverviewDataView extends DataView<OverviewLine> {
     @Override
     protected void populateItem(Item<OverviewLine> item) {
         final OverviewLine overviewLine = item.getModelObject();
-        item.add(new Label("product", overviewLine.getProduct()));
-        item.add(new Label("category", overviewLine.getCategory()));
-        item.add(new Label("amount", overviewLine.getAmount()));
-        item.add(new CurrencyLabel("price", Model.of(overviewLine.getPrice())));
+        item.add(new Label("product", overviewLine.name()));
+        item.add(new Label("category", overviewLine.category()));
+        item.add(new Label("amount", overviewLine.amount()));
+        item.add(new CurrencyLabel("price", Model.of(overviewLine.price())));
     }
 }

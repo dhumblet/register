@@ -4,7 +4,7 @@ package org.cashregister.webapp.persistence.sql;
  * Created by derkhumblet on 02/03/15.
  */
 public interface OverviewQueries {
-    static String STATS_QUERY = "SELECT p.name AS product, c.name AS category, SUM(td.amount) AS amount, SUM(td.price) AS price\n" +
+    static String STATS_QUERY = "SELECT td.name AS name, p.name AS product, c.name AS category, SUM(td.amount) AS amount, SUM(td.price) AS price\n" +
             "FROM transaction_detail td\n" +
             "\tJOIN transaction t ON t.ID = td.transaction\n" +
             "\tLEFT JOIN product p ON p.ID = td.product\n"  +

@@ -21,7 +21,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import static org.cashregister.domain.Transaction.Payment.CASH;
+import static org.cashregister.domain.Transaction.Payment.CARD;
 /**
  * Created by derkhumblet on 11/12/14.
  */
@@ -80,12 +81,12 @@ public class TransactionServiceImpl implements TransactionService {
         return null;
     }
 
-    public Receipt createTransaction(User user, BigDecimal price, BigDecimal received, BigDecimal returned, List<RowItem> items, boolean truck) {
+    private Receipt createTransaction(User user, BigDecimal price, BigDecimal received, BigDecimal returned, List<RowItem> items, boolean truck) {
         // Create transaction
-        Transaction transaction = new Transaction(price, received, returned, truck);
-        transaction.setUser(user);
+        Transaction transaction = new Transaction(price, received, CASH, returned, truck);
+        transaction.user(user);
         if (user.getMerchant() != null) {
-            transaction.setMerchant(user.getMerchant());
+            transaction.merchant(user.getMerchant());
         }
         repo.createTransaction(transaction);
         // Create receipt
@@ -111,9 +112,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override @Transactional
-    public long countTodayTransactions(long merchantId) {
-        Date start = DateHelper.getStartOfDay(new Date());
-        Date end = DateHelper.getEndOfDay(new Date());
+    public long countTodayTransactions(long merchantId, Date day) {
+        Date start = DateHelper.getStartOfDay(day);
+        Date end = DateHelper.getEndOfDay(day);
         return  repo.countTransactions(start, end, merchantId);
     }
 
@@ -121,6 +122,13 @@ public class TransactionServiceImpl implements TransactionService {
     public List<Transaction> getTodayTransactions(long merchantId) {
         Date start = DateHelper.getStartOfDay(new Date());
         Date end = DateHelper.getEndOfDay(new Date());
+        return repo.getTransactions(start, end, merchantId);
+    }
+
+    @Override @Transactional
+    public List<Transaction> getTransactionsForDate(long merchantId, Date day) {
+        Date start = DateHelper.getStartOfDay(day);
+        Date end = DateHelper.getEndOfDay(day);
         return repo.getTransactions(start, end, merchantId);
     }
 

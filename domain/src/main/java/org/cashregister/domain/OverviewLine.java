@@ -7,56 +7,36 @@ import java.math.BigDecimal;
  * Created by derkhumblet on 02/03/15.
  */
 public class OverviewLine implements Serializable {
-    private String product, category;
+    private String product, category, name;
     private BigDecimal amount, price;
 
-    public OverviewLine(String product, String category, BigDecimal amount, BigDecimal price) {
-        this.product = product;
-        this.category = category;
-        this.amount = amount;
-        this.price = price;
-    }
+    private OverviewLine() { }
 
     public OverviewLine(Object[] properties) {
         int col = 0;
+        name = (String) properties[col++];
         product = (String) properties[col++];
-        product = product == null ? "/" : product;
         category = (String) properties[col++];
         amount = (BigDecimal) properties[col++];
         price = (BigDecimal) properties[col++];
     }
 
-    public OverviewLine() { }
+    /* Get */
 
-    public String getProduct() {
-        return product;
+    public String name() {
+        return product == null && name.equalsIgnoreCase(category) ? "/" : name;
     }
 
-    public void setProduct(String product) {
-        this.product = product;
+    public String category() {
+        return category == null ? name : category;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public BigDecimal getAmount() {
+    public BigDecimal amount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
-    }
-
-    public BigDecimal getPrice() {
+    public BigDecimal price() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
 }

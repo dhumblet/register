@@ -121,7 +121,7 @@ public class KassaPage extends SecureTemplatePage {
             public void onSubmit() {
                 super.onSubmit();
                 showProductModal = false;
-                String input = productInput.getValue();//model.getObject().getProduct();
+                String input = productInput.getValue();//model.getObject().product();
                 if (ProductHelper.isProduct(input)) {
                     try {
                         Product product = productService.findProduct(input, getMerchantId(), true);
@@ -145,6 +145,7 @@ public class KassaPage extends SecureTemplatePage {
         form.add(new CustomFeedbackPanel("feedback", new ContainerFeedbackMessageFilter(form)));
         initProductInput();
         initButtons();
+//        initNegativeButton();
         if (message != null) {
             form.success(message);
             message = null;
@@ -170,6 +171,7 @@ public class KassaPage extends SecureTemplatePage {
 
     /* Add shortcut buttons for categories */
     private void initButtons() {
+        // Category buttons
         RepeatingView buttons = new RepeatingView("categoryButtons");
         for (Category category : categoryService.getCategories(getMerchantId())) {
             buttons.add(initButton(buttons.newChildId(), category));
@@ -207,6 +209,40 @@ public class KassaPage extends SecureTemplatePage {
 
         button.add(label.setOutputMarkupId(true));
         shortcutBehavior.addShortcut(shortcut, "$(\"#" + id + "\").click();");
+        return button;
+    }
+
+    /* Add single button for negative amount */
+    private AjaxButton initNegativeButton() {
+        final Category category = categoryService.findCategory("Lotto", getMerchantId());
+
+        final String name = category.getName();
+        final String shortcut = category.getShortcut();
+        final String value = name + "\n";
+        AjaxButton button = new AjaxButton("negativeButton", form) {
+            @Override
+            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+                super.onSubmit(target, form);
+                model.getObject().setProduct(value);
+//                categoryAmountField.set
+                target.prependJavaScript(Modal.showAndFocus(categoryAmountModal, categoryAmountField));
+                target.add(container);
+            }
+        };
+        button.add(new AttributeModifier("class", "btn btn-info"));
+        button.add(new AttributeModifier("style", "margin: 0 2px 2px 0; min-width: 150px; color: orangered;"));
+
+        String labelText;
+        if (shortcut == null || shortcut.isEmpty()) {
+            labelText = name;
+        } else {
+            labelText = name + " (" + shortcut + ")";
+        }
+        Label label = new Label("buttonLabel", labelText);
+        label.add(new AttributeModifier("style", "font-weight: 400;"));
+
+        button.add(label.setOutputMarkupId(true));
+        shortcutBehavior.addShortcut(shortcut, "$(\"#negativeButton\").click();");
         return button;
     }
 

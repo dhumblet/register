@@ -43,13 +43,9 @@ public class TransactionDetailModal extends Modal {
             @Override
             protected void populateItem(Item<TransactionDetail> item) {
                 final TransactionDetail detail = item.getModel().getObject();
-                if (detail.getProduct() == null) {
-                    item.add(new Label("name", detail.getCategory().getName()));
-                } else {
-                    item.add(new Label("name", detail.getProduct().getName()));
-                }
-                item.add(new Label("amount", detail.getAmount()));
-                item.add(new CurrencyLabel("price", Model.of(detail.getPrice())));
+                item.add(new Label("name", detail.name()));
+                item.add(new Label("amount", detail.amount()));
+                item.add(new CurrencyLabel("price", Model.of(detail.price())));
             }
 
             @Override

@@ -18,6 +18,7 @@ import java.util.Date;
  */
 @SqlResultSetMapping(name = "Statistic",
         columns = {
+                @ColumnResult(name = "name"),
                 @ColumnResult(name = "product"),
                 @ColumnResult(name = "category"),
                 @ColumnResult(name = "amount"),
@@ -57,70 +58,60 @@ public class Transaction extends GenericEntity implements Serializable{
 
     public Transaction() { }
 
-    public Transaction(BigDecimal price, Payment payment) {
-        this.date = new Date();
-        this.price = price;
-        this.payment = payment;
-    }
-
-    public Transaction(BigDecimal price, BigDecimal received, BigDecimal returned, boolean truck) {
+    public Transaction(BigDecimal price, BigDecimal received, Payment payment, BigDecimal returned, boolean truck) {
         this.date = new Date();
         this.price = price;
         this.received = received;
         this.returned = returned;
-        this.payment = Payment.CASH;
+        this.payment = payment == null ? Payment.CASH : payment;
         this.truck = truck;
     }
 
-    public Date getDate() {
+    public Date date() {
         return date;
     }
 
-    public BigDecimal getPrice() {
+    public BigDecimal price() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void price(BigDecimal price) {
         this.price = price;
     }
 
-    public Payment getPayment() {
+    public Payment payment() {
         return payment;
     }
 
-    public void setPayment(Payment payment) {
+    public void payment(Payment payment) {
         this.payment = payment;
     }
 
-    public BigDecimal getReceived() {
+    public BigDecimal received() {
         return received;
     }
 
-    public void setReceived(BigDecimal received) {
-        this.received = received;
-    }
-
-    public BigDecimal getReturned() {
+    public BigDecimal returned() {
         return returned;
     }
 
-    public void setReturned(BigDecimal returned) {
+    public void returned(BigDecimal returned) {
         this.returned = returned;
     }
 
-    public Merchant getMerchant() {
+    public Merchant merchant() {
         return merchant;
     }
 
-    public void setMerchant(Merchant merchant) {
+    public void merchant(Merchant merchant) {
         this.merchant = merchant;
     }
 
-    public User getUser() {
+    public User user() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void user(User user) {
         this.user = user;
     }
 
@@ -128,7 +119,7 @@ public class Transaction extends GenericEntity implements Serializable{
         return truck;
     }
 
-    public void setTruck(boolean truck) {
+    public void truck(boolean truck) {
         this.truck = truck;
     }
 

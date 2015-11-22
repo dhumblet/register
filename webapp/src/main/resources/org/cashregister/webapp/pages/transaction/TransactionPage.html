@@ -6,7 +6,21 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <wicket:message key="table.title"/>
+                    <!--<wicket:message key="table.title"/>-->
+                    <div class="panel-heading only-printable">
+                        <span wicket:id="printableDates"/>
+                    </div>
+                    <div class="panel-heading non-printable">
+                        <form wicket:id="prevForm" style="display: inline-flex; margin-right:6px;">
+                            <button wicket:id="prevButton" type="button" class="btn btn-custom-blue">&lt;</button>
+                        </form>
+                        <label class="input">
+                            <input type="text" class="form-control-row input-sm" wicket:id="transactionsDate" id="transactionsDate">
+                        </label>
+                        <form wicket:id="nextForm" style="display: inline-flex;">
+                            <button wicket:id="nextButton" type="button" class="btn btn-custom-blue">&gt;</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive">

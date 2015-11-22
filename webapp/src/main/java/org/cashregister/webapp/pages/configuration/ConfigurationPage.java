@@ -49,7 +49,7 @@ public class ConfigurationPage extends SecureTemplatePage {
             public void edit(AjaxRequestTarget target) {
                 Long editId = categoryModel.getObject().getEditCategoryId();
                 if (editId != null) {
-//                    categoryModel.setObject(getProduct(editId));
+//                    categoryModel.setObject(product(editId));
                 } else {
 //                    categoryModel.setObject(null);
                 }

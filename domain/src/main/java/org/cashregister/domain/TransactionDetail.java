@@ -38,7 +38,10 @@ public class TransactionDetail extends GenericEntity implements Serializable {
     @Column(name = "truck", nullable = false)
     private boolean truck;
 
-    public TransactionDetail() { }
+    @Column(name = "name")
+    private String name;
+
+    private TransactionDetail() { }
 
     public TransactionDetail(Category category, Transaction transaction, Product product, Integer amount, BigDecimal price, boolean truck) {
         this.category = category;
@@ -47,46 +50,31 @@ public class TransactionDetail extends GenericEntity implements Serializable {
         this.amount = amount;
         this.price = price;
         this.truck = truck;
+        this.name = product != null ? product.getName() : category.getName();
     }
 
-    public Integer getAmount() {
+    public Integer amount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void amount(Integer amount) {
         this.amount = amount;
     }
 
-    public Category getCategory() {
-
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public Transaction getTransaction() {
+    public Transaction transaction() {
         return transaction;
     }
 
-    public void setTransaction(Transaction transaction) {
+    public void transaction(Transaction transaction) {
         this.transaction = transaction;
     }
 
-    public Product getProduct() {
-        return product;
-    }
 
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public BigDecimal getPrice() {
+    public BigDecimal price() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void price(BigDecimal price) {
         this.price = price;
     }
 
@@ -94,7 +82,13 @@ public class TransactionDetail extends GenericEntity implements Serializable {
         return truck;
     }
 
-    public void setTruck(boolean truck) {
+    public void truck(boolean truck) {
         this.truck = truck;
     }
+
+    public String name() {
+        return name;
+    }
+
+
 }

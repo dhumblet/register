@@ -13,10 +13,10 @@ public class Receipt implements Serializable {
 
     public static Receipt forTransaction(Transaction transaction) {
         Receipt receipt = new Receipt();
-        receipt.merchant = transaction.getMerchant().getName();
-        receipt.total = transaction.getPrice().toString();
-        receipt.recevied = transaction.getReceived().toString();
-        receipt.returned = transaction.getReturned().toString();
+        receipt.merchant = transaction.merchant().getName();
+        receipt.total = transaction.price().toString();
+        receipt.recevied = transaction.received().toString();
+        receipt.returned = transaction.returned().toString();
         return receipt;
     }
 
@@ -48,11 +48,9 @@ public class Receipt implements Serializable {
         private String name, count, price;
 
         public ReceiptDetail(TransactionDetail detail) {
-            this.name = detail.getProduct() != null ?
-                    detail.getProduct().getName() :
-                    detail.getCategory().getName();
-            this.count = String.valueOf(detail.getAmount().intValue());
-            this.price = detail.getPrice().toString();
+            this.name = detail.name();
+            this.count = String.valueOf(detail.amount().intValue());
+            this.price = detail.price().toString();
         }
 
         public String getName() {
