@@ -10,7 +10,6 @@ import org.apache.wicket.request.Response;
 import org.apache.wicket.request.cycle.AbstractRequestCycleListener;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.spring.injection.annot.SpringComponentInjector;
-import org.cashregister.webapp.pages.configuration.ConfigurationPage;
 import org.cashregister.webapp.pages.error.ErrorPage;
 import org.cashregister.webapp.pages.kassa.KassaPage;
 import org.cashregister.webapp.pages.login.LoginPage;
@@ -54,7 +53,7 @@ public class CashRegisterApplication extends SwarmWebApplication {
         mountPage("/transactions", TransactionPage.class);
         mountPage("/overview", OverviewPage.class);
         mountPage("/statistics", StatisticsPage.class);
-        mountPage("/config", ConfigurationPage.class);
+//        mountPage("/config", ConfigurationPage.class);
         mountPage("/login", LoginPage.class);
         mountPage("/error", ErrorPage.class);
         mountPage("/error/${http}", ErrorPage.class);
@@ -93,7 +92,7 @@ public class CashRegisterApplication extends SwarmWebApplication {
         factory.setAlias("transactions", TransactionPage.class.getName());
         factory.setAlias("overview", OverviewPage.class.getName());
         factory.setAlias("statistics", StatisticsPage.class.getName());
-        factory.setAlias("config", ConfigurationPage.class.getName());
+//        factory.setAlias("config", ConfigurationPage.class.getName());
         factory.addPolicyFile(getClass().getResource("/register.hive"));
         HiveMind.registerHive(getHiveKey(), factory);
     }
