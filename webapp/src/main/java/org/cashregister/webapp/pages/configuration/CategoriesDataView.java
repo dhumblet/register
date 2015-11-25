@@ -51,7 +51,7 @@
 //        populateDeleteButton(item, editForm, categoryModel);
 //        item.add(editForm.setOutputMarkupId(true));
 //
-//        if (model.getObject().getEditCategoryId() != null && model.getObject().getEditCategoryId().longValue() == item.getModelObject().getId().longValue()) {
+//        if (model.getObject().getEditCategoryId() != null && model.getObject().getEditCategoryId().longValue() == item.getModelObject().id().longValue()) {
 //
 //        } else {
 //            categoryName.setEnabled(false);
@@ -74,7 +74,7 @@
 //            @Override
 //            protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 //                super.onSubmit(target, form);
-//                model.getObject().setEditCategoryId(category.getId());
+//                model.getObject().setEditCategoryId(category.id());
 //                target.add(container);
 //                callback.edit(target);
 //            }

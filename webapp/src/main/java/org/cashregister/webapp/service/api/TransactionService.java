@@ -8,7 +8,7 @@ import org.cashregister.webapp.pages.kassa.RowItem;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
+import static org.cashregister.domain.Transaction.Payment;
 /**
  * Created by derkhumblet on 11/12/14.
  */
@@ -16,11 +16,12 @@ public interface TransactionService {
     /**
      * Create a new transaction.
      * @param price
+     * @param paymentType
      * @param received
      * @param returned
      * @param details
      */
-    Receipt createTransaction(User user, BigDecimal price, BigDecimal received, BigDecimal returned, List<RowItem> details);
+    Receipt createTransaction(User user, BigDecimal price, Payment paymentType, BigDecimal received, BigDecimal returned, List<RowItem> details);
 
     long countTodayTransactions(long merchantId, Date day);
 

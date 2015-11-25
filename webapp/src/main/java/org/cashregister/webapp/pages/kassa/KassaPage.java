@@ -2,8 +2,10 @@ package org.cashregister.webapp.pages.kassa;
 
 import com.googlecode.wicket.jquery.ui.form.button.AjaxButton;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxLink;
 import org.apache.wicket.feedback.ContainerFeedbackMessageFilter;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.head.IHeaderResponse;
@@ -11,7 +13,9 @@ import org.apache.wicket.markup.head.OnLoadHeaderItem;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
+import org.apache.wicket.markup.html.form.ImageButton;
 import org.apache.wicket.markup.html.form.NumberTextField;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.list.ListItem;
@@ -24,10 +28,12 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.request.cycle.RequestCycle;
 import org.apache.wicket.request.http.WebRequest;
+import org.apache.wicket.request.resource.ResourceReference;
 import org.apache.wicket.spring.injection.annot.SpringBean;
 import org.cashregister.domain.Category;
 import org.cashregister.domain.Product;
 import org.cashregister.domain.Receipt;
+import org.cashregister.domain.Transaction;
 import org.cashregister.webapp.behavior.FocusOnLoadBehavior;
 import org.cashregister.webapp.behavior.PlaceholderBehavior;
 import org.cashregister.webapp.behavior.ReFocusBehavior;
@@ -51,6 +57,9 @@ import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import static org.cashregister.domain.Transaction.Payment.CASH;
+import static org.cashregister.domain.Transaction.Payment.CARD;
+import static org.cashregister.domain.Transaction.Payment;
 /**
  * Created by derkhumblet on 10/11/14.
  */
@@ -60,6 +69,7 @@ public class KassaPage extends SecureTemplatePage {
     @SpringBean public TransactionService transactionService;
     private ReFocusBehavior focusBehavior;
     private IModel<KassaModel> model;
+    private IModel<Payment> paymentType;
     private WebMarkupContainer container;
     private Form form;
     private TextField productInput;
@@ -93,6 +103,7 @@ public class KassaPage extends SecureTemplatePage {
         model = Model.of(new KassaModel());
         productsModel = Model.of(new ProductsModel());
         productModel = Model.of(new Product());
+        paymentType = Model.of(CASH);
         container = new WebMarkupContainer("container");
         shortcutBehavior = new ShortcutBehavior();
         shortcutBehavior.addShortcut("esc", "$(\"#product\").focus();");
@@ -404,14 +415,24 @@ public class KassaPage extends SecureTemplatePage {
         totalAmountModal = new WebMarkupContainer("totalAmountModal");
         totalAmountModal.add(new ReFocusBehavior(totalAmountField));
         totalAmountForm = new Form("total-form");
+
+        // Title
+        final Model<String> titleModel = Model.of(getString("modal.total.title.cash"));
+        final Label title = new Label("totalModalTitle", titleModel);
+        totalAmountForm.add(title.setOutputMarkupId(true));
+        // Feedback
         final CustomFeedbackPanel feedback = new CustomFeedbackPanel("totalFeedback", new ContainerFeedbackMessageFilter(totalAmountForm));
         totalAmountForm.add(feedback.setOutputMarkupPlaceholderTag(true));
+
+        // Total amount label
         final CurrencyLabel totalLabel = new CurrencyLabel("totalAmount", new PropertyModel(model, "total"));
-        totalAmountForm.add(totalLabel.setOutputMarkupId(true));
+        totalAmountForm.add(totalLabel.setOutputMarkupPlaceholderTag(true));
 
+        // Return
         final CurrencyLabel returnAmountLabel = new CurrencyLabel("returnAmount", new PropertyModel(this, "returnAmount"));
-        totalAmountForm.add(returnAmountLabel.setOutputMarkupId(true));
+        totalAmountForm.add(returnAmountLabel.setOutputMarkupPlaceholderTag(true));
 
+        // Amount given
         totalAmountField = new NumberTextField<BigDecimal>("totalAmountInput", new PropertyModel(this, "totalInputAmount")) {
             @Override
             public void onComponentTag(ComponentTag tag) {
@@ -429,8 +450,8 @@ public class KassaPage extends SecureTemplatePage {
                     target.add(feedback, payButton, totalLabel);
                 } else {
                     returnAmount = input.subtract(model.getObject().getTotal());
-                    payButton.setVisible(returnAmount.compareTo(BigDecimal.ZERO) >= 0);
                     returnAmount = returnAmount.max(BigDecimal.ZERO);
+                    payButton.setVisible(returnAmount.compareTo(BigDecimal.ZERO) >= 0);
                     target.add(returnAmountLabel, feedback, payButton, totalLabel);
                 }
             }
@@ -443,9 +464,10 @@ public class KassaPage extends SecureTemplatePage {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
                 try {
-                    Receipt receipt = transactionService.createTransaction(
+                    transactionService.createTransaction(
                             getRegisterSession().getUser(),
                             model.getObject().getTotal(),
+                            paymentType.getObject(),
                             BigDecimalHelper.asBigDecimal(totalAmountField.getInput()),
                             returnAmount,
                             model.getObject().getItems());
@@ -472,6 +494,33 @@ public class KassaPage extends SecureTemplatePage {
         totalAmountForm.add(closeTotalButton.setOutputMarkupId(true));
         totalAmountModal.add(totalAmountForm.setOutputMarkupId(true));
         add(totalAmountModal.setOutputMarkupPlaceholderTag(true));
+
+        // Payment type buttons
+        totalAmountForm.add(new AjaxLink<Void>("cashButton") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                paymentType.setObject(CASH);
+                titleModel.setObject(getString("modal.total.title.cash"));
+                totalAmountField.setModelObject("");
+                totalAmountField.clearInput();
+                returnAmount = null;
+                payButton.setVisible(false);
+                target.add(totalAmountForm);
+                target.focusComponent(totalAmountField);
+            }
+        }.setOutputMarkupId(true));
+        totalAmountForm.add(new AjaxLink<Void>("cardButton") {
+            @Override
+            public void onClick(AjaxRequestTarget target) {
+                paymentType.setObject(CARD);
+                titleModel.setObject(getString("modal.total.title.card"));
+                totalAmountField.setModelObject(model.getObject().getTotal());
+                returnAmount = BigDecimal.ZERO;
+                payButton.setVisible(true);
+                target.add(totalAmountForm);
+                target.focusComponent(payButton);
+            }
+        }.setOutputMarkupId(true));
     }
 
     /* Reset entire page */

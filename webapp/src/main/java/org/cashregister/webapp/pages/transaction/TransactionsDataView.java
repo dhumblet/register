@@ -29,6 +29,7 @@ public class TransactionsDataView extends DataView<Transaction> {
         item.add(new Label("time", DateHelper.getTimeString(transaction.date())));
         item.add(new CurrencyLabel("amount", Model.of(transaction.price())));
         item.add(new CurrencyLabel("given", Model.of(transaction.received())));
+        item.add(new Label("type", transaction.payment().representation()));
         item.add(new CurrencyLabel("returned", Model.of(transaction.returned())));
 
         item.add(new AjaxEventBehavior("onClick") {

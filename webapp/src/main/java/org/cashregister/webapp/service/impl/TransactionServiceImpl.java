@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import static org.cashregister.domain.Transaction.Payment.CASH;
 import static org.cashregister.domain.Transaction.Payment.CARD;
+import static org.cashregister.domain.Transaction.Payment;
 /**
  * Created by derkhumblet on 11/12/14.
  */
@@ -34,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired private CategoryService categoryService;
 
     @Override @Transactional
-    public Receipt createTransaction(User user, BigDecimal price, BigDecimal received, BigDecimal returned, List<RowItem> items) {
+    public Receipt createTransaction(User user, BigDecimal price, Payment paymentType, BigDecimal received, BigDecimal returned, List<RowItem> items) {
         boolean hasTruck = false;
         boolean hasTransaction = false;
         List<RowItem> transactionItems = new ArrayList<>();
@@ -59,31 +60,22 @@ public class TransactionServiceImpl implements TransactionService {
         }
         // Calculate given and returns
         if (hasTransaction && !hasTruck) {
-            createTransaction(user, transactionPrice, received, returned, transactionItems, false);
+            createTransaction(user, transactionPrice, paymentType, received, returned, transactionItems, false);
         } else if (!hasTransaction && hasTruck) {
-            createTransaction(user, truckPrice, received, returned, truckItems, true);
+            createTransaction(user, truckPrice, paymentType, received, returned, truckItems, true);
         } else {
             // Transaction
             BigDecimal transactionReturned = received.subtract(transactionPrice);
-            createTransaction(user, transactionPrice, received, transactionReturned, transactionItems, false);
+            createTransaction(user, transactionPrice, paymentType, received, transactionReturned, transactionItems, false);
             // Truck
-            createTransaction(user, truckPrice, truckPrice, BigDecimal.ZERO, truckItems, true );
+            createTransaction(user, truckPrice, paymentType, truckPrice, BigDecimal.ZERO, truckItems, true );
         }
-
-//        if (hasTransaction) {
-//            createTransaction(user, transactionPrice, received.subtract(truckPrice), returned, transactionItems, false);
-//        }
-//        if (hasTruck) {
-//            final BigDecimal truckReceived = hasTransaction ? received.subtract(transactionPrice).subtract(returned) : received;
-//            final BigDecimal truckReturned = hasTransaction ? BigDecimal.ZERO : returned;
-//            createTransaction(user, truckPrice, truckReceived, truckReturned, truckItems, true);
-//        }
         return null;
     }
 
-    private Receipt createTransaction(User user, BigDecimal price, BigDecimal received, BigDecimal returned, List<RowItem> items, boolean truck) {
+    private Receipt createTransaction(User user, BigDecimal price, Payment paymentType, BigDecimal received, BigDecimal returned, List<RowItem> items, boolean truck) {
         // Create transaction
-        Transaction transaction = new Transaction(price, received, CASH, returned, truck);
+        Transaction transaction = new Transaction(price, received, paymentType, returned, truck);
         transaction.user(user);
         if (user.getMerchant() != null) {
             transaction.merchant(user.getMerchant());

@@ -124,16 +124,19 @@ public class Transaction extends GenericEntity implements Serializable{
     }
 
     public enum Payment implements Serializable {
-        CASH(0), CARD(1);
+        CASH(0, "Cash"), CARD(1, "Bancontact");
 
         private Integer id;
+        private String representation;
 
-        Payment(Integer id) {
-            this.id = id;
+        Payment(Integer id, String representation) {
+            this.id = id; this.representation = representation;
         }
 
-        public Integer getId() {
+        public Integer id() {
             return id;
         }
+
+        public String representation() { return representation; }
     }
 }

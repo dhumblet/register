@@ -83,7 +83,11 @@
                 <form wicket:id="category-form">
                     <div class="modal-header">
                         <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
-                        <h4 class="modal-title" id="myModalLabel"><wicket:message key="modal.category.title"/></h4>
+                        <h4 class="modal-title" id="myModalLabel">
+                            <center>
+                                <wicket:message key="modal.category.title"/>
+                            </center>
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <span wicket:id="categoryFeedback"></span>
@@ -105,10 +109,21 @@
                 <form wicket:id="total-form">
                     <div class="modal-header">
                         <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
-                        <h4 class="modal-title" id="myTotalModalLabel"><wicket:message key="modal.total.title"/></h4>
+                        <h4 class="modal-title" id="myTotalModalLabel">
+                            <center>
+                                <span wicket:id="totalModalTitle"/>
+                            </center>
+                        </h4>
                     </div>
                     <div class="modal-body">
+                        <center>
                         <span wicket:id="totalFeedback"></span>
+
+                            <div>
+                                <a wicket:id="cashButton"><img src="/images/cash.png" style="width: 100px;"></a>
+                                <a wicket:id="cardButton"><img src="/images/card.png" style="width: 100px;"></a>
+                            </div>
+                        <br/>
                         <table>
                             <tr>
                                 <td style="padding-right: 20px;"><wicket:message key="modal.total.pay"/></td>
@@ -124,6 +139,7 @@
                                 <td><label class="important-text" wicket:id="returnAmount"/></td>
                             </tr>
                         </table>
+                        </center>
                     </div>
                     <div class="modal-footer" style="text-align: center;">
                         <button type="button" class="btn btn-default" data-dismiss="modal" wicket:id="closeTotal"><wicket:message key="button.close"/></button>
@@ -141,7 +157,11 @@
                 <form wicket:id="product-form">
                     <div class="modal-header">
                         <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>-->
-                        <h4 class="modal-title" id="myProductModalLabel"><wicket:message key="modal.product"/></h4>
+                        <h4 class="modal-title" id="myProductModalLabel">
+                            <center>
+                                <wicket:message key="modal.product"/>
+                            </center>
+                        </h4>
                     </div>
                     <div class="modal-body">
                         <span wicket:id="productFeedback"></span>
