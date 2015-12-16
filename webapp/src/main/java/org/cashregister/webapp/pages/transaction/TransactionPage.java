@@ -17,7 +17,6 @@ import org.cashregister.webapp.component.ModalCallback;
 import org.cashregister.domain.Transaction;
 import org.cashregister.webapp.pages.template.SecureTemplatePage;
 import org.cashregister.webapp.service.api.TransactionService;
-import org.joda.time.DateTime;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -46,7 +45,7 @@ public class TransactionPage extends SecureTemplatePage {
     @Override
     public void onInitialize() {
         super.onInitialize();
-        transaction = Model.of(new Transaction());
+        transaction = Model.of(Transaction.builder().build());
         transactionDate = Model.of(new Date());
 
         container = new WebMarkupContainer("container");
@@ -120,7 +119,7 @@ public class TransactionPage extends SecureTemplatePage {
 
             @Override
             public void close(AjaxRequestTarget target) {
-                transaction.setObject(new Transaction());
+                transaction.setObject(Transaction.builder().build());
                 target.appendJavaScript(Modal.hide(transactionDetail));
                 target.add(detailForm);
             }

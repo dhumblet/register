@@ -10,6 +10,7 @@ import org.cashregister.webapp.pages.kassa.RowItem;
 import org.cashregister.webapp.persistence.api.TransactionDetailRepository;
 import org.cashregister.webapp.persistence.api.TransactionRepository;
 import org.cashregister.webapp.service.api.CategoryService;
+import org.cashregister.webapp.service.api.ConfigService;
 import org.cashregister.webapp.service.api.ProductService;
 import org.cashregister.webapp.service.api.TransactionService;
 import org.cashregister.webapp.util.DateHelper;
@@ -21,9 +22,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import static org.cashregister.domain.Transaction.Payment.CASH;
-import static org.cashregister.domain.Transaction.Payment.CARD;
+
 import static org.cashregister.domain.Transaction.Payment;
+import static org.cashregister.domain.Transaction.Payment.CARD;
 /**
  * Created by derkhumblet on 11/12/14.
  */
@@ -33,6 +34,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Autowired private TransactionDetailRepository detailRepo;
     @Autowired private ProductService productService;
     @Autowired private CategoryService categoryService;
+    @Autowired private ConfigService configService;
 
     @Override @Transactional
     public Receipt createTransaction(User user, BigDecimal price, Payment paymentType, BigDecimal received, BigDecimal returned, List<RowItem> items) {
@@ -74,15 +76,25 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private Receipt createTransaction(User user, BigDecimal price, Payment paymentType, BigDecimal received, BigDecimal returned, List<RowItem> items, boolean truck) {
-        // Create transaction
-        Transaction transaction = new Transaction(price, received, paymentType, returned, truck);
-        transaction.user(user);
-        if (user.getMerchant() != null) {
-            transaction.merchant(user.getMerchant());
+        BigDecimal paymentCost = BigDecimal.ZERO;
+        if (paymentType == CARD && price.compareTo(configService.electronicPaymentLimit()) < 0) {
+            paymentCost = configService.electronicPaymentCost();
         }
+        // Create transaction
+        Transaction transaction = Transaction.builder()
+                .price(price)
+                .received(received)
+                .payment(paymentType)
+                .paymentCost(paymentCost)
+                .returned(returned)
+                .truck(truck)
+                .user(user)
+            .build();
+
         repo.createTransaction(transaction);
         // Create receipt
-//        Receipt receipt = Receipt.forTransaction(transaction);
+        //        Receipt receipt = Receipt.forTransaction(transaction);
+
         // Create details
         for (RowItem item : items) {
             Product product = null;
@@ -97,9 +109,10 @@ public class TransactionServiceImpl implements TransactionService {
             }
             TransactionDetail detail = new TransactionDetail(category, transaction, product, item.getAmount(), item.getTotal(), truck);
             detailRepo.createTransactionDetail(detail);
-//            receipt.addDetail(detail);
+            //            receipt.addDetail(detail);
         }
-//        return receipt;
+
+        // return receipt;
         return null;
     }
 

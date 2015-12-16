@@ -1,5 +1,6 @@
 package org.cashregister.domain;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.Entity;
@@ -45,6 +46,9 @@ public class Transaction extends GenericEntity implements Serializable{
     @Column(name = "payment")
     private Payment payment;
 
+    @Column(name = "paymentCost", nullable = false)
+    private BigDecimal paymentCost;
+
     @ManyToOne
     @JoinColumn(name="merchantId")
     private Merchant merchant;
@@ -58,15 +62,6 @@ public class Transaction extends GenericEntity implements Serializable{
 
     public Transaction() { }
 
-    public Transaction(BigDecimal price, BigDecimal received, Payment payment, BigDecimal returned, boolean truck) {
-        this.date = new Date();
-        this.price = price;
-        this.received = received;
-        this.returned = returned;
-        this.payment = payment == null ? Payment.CASH : payment;
-        this.truck = truck;
-    }
-
     public Date date() {
         return date;
     }
@@ -75,16 +70,10 @@ public class Transaction extends GenericEntity implements Serializable{
         return price;
     }
 
-    public void price(BigDecimal price) {
-        this.price = price;
-    }
+    public BigDecimal totalPrice() { return price.add(paymentCost); }
 
     public Payment payment() {
         return payment;
-    }
-
-    public void payment(Payment payment) {
-        this.payment = payment;
     }
 
     public BigDecimal received() {
@@ -95,32 +84,21 @@ public class Transaction extends GenericEntity implements Serializable{
         return returned;
     }
 
-    public void returned(BigDecimal returned) {
-        this.returned = returned;
-    }
-
     public Merchant merchant() {
         return merchant;
-    }
-
-    public void merchant(Merchant merchant) {
-        this.merchant = merchant;
     }
 
     public User user() {
         return user;
     }
 
-    public void user(User user) {
-        this.user = user;
-    }
-
     public boolean isTruck() {
         return truck;
     }
 
-    public void truck(boolean truck) {
-        this.truck = truck;
+
+    public BigDecimal paymentCost() {
+        return this.paymentCost;
     }
 
     public enum Payment implements Serializable {
@@ -139,4 +117,59 @@ public class Transaction extends GenericEntity implements Serializable{
 
         public String representation() { return representation; }
     }
+
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private Transaction instance = new Transaction();
+
+        public Builder price(BigDecimal price) {
+            instance.price = price;
+            return this;
+        }
+
+        public Builder received(BigDecimal received) {
+            instance.received = received;
+            return this;
+        }
+
+        public Builder payment(Payment payment) {
+            instance.payment = payment;
+            return this;
+        }
+
+        public Builder returned(BigDecimal returned) {
+            instance.returned = returned;
+            return this;
+        }
+
+        public Builder truck(boolean truck) {
+            instance.truck = truck;
+            return this;
+        }
+
+        public Builder paymentCost(BigDecimal paymentCost) {
+            instance.paymentCost = paymentCost;
+            return this;
+        }
+
+        public Builder user(User user) {
+            instance.user = user;
+            if (user.getMerchant() != null) {
+                instance.merchant = user.getMerchant();
+            }
+            return this;
+        }
+
+        public Transaction build() {
+            Transaction result = instance;
+            instance = new Transaction();
+            result.date = new Date();
+            return result;
+        }
+    }
+
 }

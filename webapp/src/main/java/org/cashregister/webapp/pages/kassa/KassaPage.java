@@ -45,7 +45,9 @@ import org.cashregister.webapp.component.ModalCallback;
 import org.cashregister.webapp.pages.product.ProductModal;
 import org.cashregister.webapp.pages.product.ProductsModel;
 import org.cashregister.webapp.pages.template.SecureTemplatePage;
+import org.cashregister.webapp.persistence.api.ConfigRepository;
 import org.cashregister.webapp.service.api.CategoryService;
+import org.cashregister.webapp.service.api.ConfigService;
 import org.cashregister.webapp.service.api.ProductService;
 import org.cashregister.webapp.service.api.TransactionService;
 import org.cashregister.webapp.util.BigDecimalHelper;
@@ -67,6 +69,7 @@ public class KassaPage extends SecureTemplatePage {
     @SpringBean public CategoryService categoryService;
     @SpringBean public ProductService productService;
     @SpringBean public TransactionService transactionService;
+    @SpringBean public ConfigService configService;
     private ReFocusBehavior focusBehavior;
     private IModel<KassaModel> model;
     private IModel<Payment> paymentType;
@@ -200,6 +203,7 @@ public class KassaPage extends SecureTemplatePage {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
+                model.getObject().removePaymentCost();
                 model.getObject().setProduct(value);
                 target.prependJavaScript(Modal.showAndFocus(categoryAmountModal, categoryAmountField));
                 target.add(container);
@@ -416,6 +420,7 @@ public class KassaPage extends SecureTemplatePage {
         totalAmountModal.add(new ReFocusBehavior(totalAmountField));
         totalAmountForm = new Form("total-form");
 
+
         // Title
         final Model<String> titleModel = Model.of(getString("modal.total.title.cash"));
         final Label title = new Label("totalModalTitle", titleModel);
@@ -485,6 +490,7 @@ public class KassaPage extends SecureTemplatePage {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
+                model.getObject().removePaymentCost();
                 model.getObject().setProduct(null);
                 target.add(container, totalAmountModal);
                 target.appendJavaScript(Modal.hide(totalAmountModal));
@@ -499,6 +505,7 @@ public class KassaPage extends SecureTemplatePage {
         totalAmountForm.add(new AjaxLink<Void>("cashButton") {
             @Override
             public void onClick(AjaxRequestTarget target) {
+                model.getObject().removePaymentCost();
                 paymentType.setObject(CASH);
                 titleModel.setObject(getString("modal.total.title.cash"));
                 totalAmountField.setModelObject("");
@@ -512,6 +519,7 @@ public class KassaPage extends SecureTemplatePage {
         totalAmountForm.add(new AjaxLink<Void>("cardButton") {
             @Override
             public void onClick(AjaxRequestTarget target) {
+                model.getObject().checkPaymentCost(configService);
                 paymentType.setObject(CARD);
                 titleModel.setObject(getString("modal.total.title.card"));
                 totalAmountField.setModelObject(model.getObject().getTotal());

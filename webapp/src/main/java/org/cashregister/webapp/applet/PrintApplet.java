@@ -46,7 +46,7 @@ public class PrintApplet extends Applet {
 
     /**
      * Print the PDF loaded by the "load" method. This will display a dialog asking
-     * the user to select a printer, papersize etc. and start the print. If you want
+     * the user to select a printer.printer, papersize etc. and start the print. If you want
      * to print immediately without this dialog, you can alter the method to do that
      * quite easily - see the "PrintPDF.java" example supplied with the PDF package.
      */

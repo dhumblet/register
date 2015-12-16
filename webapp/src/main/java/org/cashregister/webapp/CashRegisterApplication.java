@@ -32,6 +32,7 @@ import java.util.TimeZone;
 public class CashRegisterApplication extends SwarmWebApplication {
     private static final Logger LOG = LoggerFactory.getLogger(CashRegisterApplication.class);
     private static final String HIVE_KEY = "org.cashregister.webapp";
+    private static RegisterSession session;
 
     @Override
     protected void init() {
@@ -99,11 +100,15 @@ public class CashRegisterApplication extends SwarmWebApplication {
 
     @Override
     public Session newSession(Request request, Response response) {
-        RegisterSession session = new RegisterSession(this, request);
+        session = new RegisterSession(this, request);
         return session;
     }
 
     private void setTimeZone() {
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/Brussels"));
+    }
+
+    public static RegisterSession session() {
+        return session;
     }
 }

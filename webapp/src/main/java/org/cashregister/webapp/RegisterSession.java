@@ -1,6 +1,7 @@
 package org.cashregister.webapp;
 
 import org.apache.wicket.request.Request;
+import org.cashregister.domain.Merchant;
 import org.cashregister.domain.User;
 import org.wicketstuff.security.WaspApplication;
 import org.wicketstuff.security.WaspSession;
@@ -26,4 +27,6 @@ public class RegisterSession extends WaspSession {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Merchant merchant() { return user.getMerchant(); }
 }

@@ -14,7 +14,7 @@ public class Receipt implements Serializable {
     public static Receipt forTransaction(Transaction transaction) {
         Receipt receipt = new Receipt();
         receipt.merchant = transaction.merchant().getName();
-        receipt.total = transaction.price().toString();
+        receipt.total = transaction.totalPrice().toString();
         receipt.recevied = transaction.received().toString();
         receipt.returned = transaction.returned().toString();
         return receipt;

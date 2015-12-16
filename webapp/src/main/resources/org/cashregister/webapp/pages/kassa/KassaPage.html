@@ -2,6 +2,14 @@
 <html xmlns:wicket="http://wicket.apache.org">
 <body>
 <wicket:extend>
+    <script src="https://www.java.com/js/deployJava.js"></script>
+    <script>
+    var attributes = {} ;
+    <!-- Base64 encoded string truncated below for readability -->
+    var parameters = {jnlp_href: 'printer/printer.jnlp', jnlp_embedded: 'cHJpbnRlci9wcmludGVyLmpubHA='
+    } ;
+    deployJava.runApplet(attributes, parameters, '1.6');
+    </script>
 
     <div class="row" wicket:id="container">
         <form id="inputForm" wicket:id="input-form">
