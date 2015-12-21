@@ -323,7 +323,7 @@ public class KassaPage extends SecureTemplatePage {
         //Truck header
         WebMarkupContainer truckHeader = new WebMarkupContainer("truckHeader");
         truckHeader.setVisible(getRegisterSession().getUser().getMerchant().isTruck());
-        items.add(truckHeader.setOutputMarkupId(true));
+        form.add(truckHeader.setOutputMarkupId(true));
         form.add(items.setOutputMarkupId(true));
     }
 

@@ -18,6 +18,7 @@
     <modules>
         <module>../domain</module>
         <module>../webapp</module>
+        <module>../common</module>
     </modules>
 
     <properties>
@@ -34,6 +35,11 @@
             <dependency>
                 <groupId>org.cashregister</groupId>
                 <artifactId>domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.cashregister</groupId>
+                <artifactId>common</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
