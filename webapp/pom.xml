@@ -15,18 +15,18 @@
     </parent>
 
     <properties>
-        <openshift>${basedir}/web/scripts/backup-war.sh</openshift>
+        <!--<openshift>${basedir}/web/scripts/backup-war.sh</openshift>-->
     </properties>
 
 
-    <profiles>
-        <profile>
-            <id>deploy</id>
-            <properties>
-                <openshift>${basedir}/web/scripts/deploy-war.sh</openshift>
-            </properties>
-        </profile>
-    </profiles>
+    <!--<profiles>-->
+        <!--<profile>-->
+            <!--<id>deploy</id>-->
+            <!--<properties>-->
+                <!--<openshift>${basedir}/web/scripts/deploy-war.sh</openshift>-->
+            <!--</properties>-->
+        <!--</profile>-->
+    <!--</profiles>-->
 
     <dependencies>
         <!-- CASH REGISTER -->
