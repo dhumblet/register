@@ -274,7 +274,6 @@
                     <include>**/*.css</include>
                     <include>**/*.js</include>
                     <include>**/*.sh</include>
-                    <include>**/*.jnlp</include>
                 </includes>
             </resource>
             <resource>
@@ -288,7 +287,6 @@
                     <include>**/*.css</include>
                     <include>**/*.js</include>
                     <include>**/*.sh</include>
-                    <include>**/*.jnlp</include>
                 </includes>
             </resource>
             <resource>

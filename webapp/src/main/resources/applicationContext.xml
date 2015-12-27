@@ -16,18 +16,20 @@
 
     <bean id="springApplicationContext" class="org.cashregister.webapp.util.SpringApplicationContext"/>
 
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!-- OpenShift -->
+        <!--<property name="location" value="environment.openshift.properties"/>-->
+        <!-- Local -->
+        <property name="location" value="environment.${env:local}.properties"/>
+    </bean>
+
     <!-- DATABASE -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 
-        <!-- OpenShift -->
-        <property name="url" value="jdbc:mysql://127.6.254.130:3306/register?autoReconnect=true"/>
-        <property name="username" value="adminhrq2aVr"/>
-        <property name="password" value="idvkZaQSUGxf"/>
-        <!-- Local -->
-        <!--<property name="url" value="jdbc:mysql://localhost:3306/cash.register"/>-->
-        <!--<property name="username" value="SVA_ADMIN"/>-->
-        <!--<property name="password" value="SVA_ADMIN"/>-->
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
 
         <property name="initialSize" value="5"/>
         <property name="maxActive" value="10"/>
