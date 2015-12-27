@@ -21,13 +21,13 @@
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
 
         <!-- OpenShift -->
-        <!--<property name="url" value="jdbc:mysql://127.6.254.130:3306/register?autoReconnect=true"/>-->
-        <!--<property name="username" value="adminhrq2aVr"/>-->
-        <!--<property name="password" value="idvkZaQSUGxf"/>-->
+        <property name="url" value="jdbc:mysql://127.6.254.130:3306/register?autoReconnect=true"/>
+        <property name="username" value="adminhrq2aVr"/>
+        <property name="password" value="idvkZaQSUGxf"/>
         <!-- Local -->
-        <property name="url" value="jdbc:mysql://localhost:3306/cash.register"/>
-        <property name="username" value="SVA_ADMIN"/>
-        <property name="password" value="SVA_ADMIN"/>
+        <!--<property name="url" value="jdbc:mysql://localhost:3306/cash.register"/>-->
+        <!--<property name="username" value="SVA_ADMIN"/>-->
+        <!--<property name="password" value="SVA_ADMIN"/>-->
 
         <property name="initialSize" value="5"/>
         <property name="maxActive" value="10"/>
