@@ -2,6 +2,7 @@ package org.cashregister.webapp.service.impl;
 
 import org.cashregister.domain.Merchant;
 import org.cashregister.webapp.CashRegisterApplication;
+import org.cashregister.webapp.RegisterSession;
 import org.cashregister.webapp.persistence.api.ConfigRepository;
 import org.cashregister.webapp.service.api.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class ConfigServiceImpl implements ConfigService {
     }
 
     private Merchant merchant() {
-        return CashRegisterApplication.session().merchant();
+        RegisterSession session = CashRegisterApplication.session();
+        if (session == null) {
+            System.out.println("SESSION EMPTY!");
+        }
+        return session.merchant();
     }
 }
