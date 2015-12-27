@@ -34,10 +34,10 @@
             <groupId>org.cashregister</groupId>
             <artifactId>domain</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.cashregister</groupId>
-            <artifactId>common</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.cashregister</groupId>-->
+            <!--<artifactId>common</artifactId>-->
+        <!--</dependency>-->
 
         <!--  WICKET DEPENDENCIES -->
         <dependency>
