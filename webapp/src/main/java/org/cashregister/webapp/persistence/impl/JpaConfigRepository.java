@@ -19,7 +19,7 @@ public class JpaConfigRepository extends JpaGenericRepository<Config> implements
 
     @Transactional
     public void setConfigForKey(String key, String value, Merchant merchant) {
-        Config config = getConfigForKey(key, merchant);
+        Config config = getConfigForKey(key, merchant.getId());
         if (config != null) {
             config.value(value);
             getEntityManager().merge(config);
@@ -30,9 +30,9 @@ public class JpaConfigRepository extends JpaGenericRepository<Config> implements
     }
 
     @Transactional
-    public Config getConfigForKey(String key, Merchant merchant) {
-        TypedQuery<Config> q = getEntityManager().createQuery("SELECT c FROM Config c WHERE merchant = ?1 AND key = ?2", Config.class);
-        q.setParameter(1, merchant);
+    public Config getConfigForKey(String key, Long merchantId) {
+        TypedQuery<Config> q = getEntityManager().createQuery("SELECT c FROM Config c WHERE merchant.id = ?1 AND key = ?2", Config.class);
+        q.setParameter(1, merchantId);
         q.setParameter(2, key);
         return q.getSingleResult();
     }

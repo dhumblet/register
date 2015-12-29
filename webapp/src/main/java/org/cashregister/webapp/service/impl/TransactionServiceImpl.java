@@ -77,8 +77,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     private Receipt createTransaction(User user, BigDecimal price, Payment paymentType, BigDecimal received, BigDecimal returned, List<RowItem> items, boolean truck) {
         BigDecimal paymentCost = BigDecimal.ZERO;
-        if (paymentType == CARD && price.compareTo(configService.electronicPaymentLimit()) < 0) {
-            paymentCost = configService.electronicPaymentCost();
+        if (paymentType == CARD && price.compareTo(configService.electronicPaymentLimitForMerchant(user.getMerchant().getId())) < 0) {
+            paymentCost = configService.electronicPaymentCostForMerchant(user.getMerchant().getId());
         }
         // Create transaction
         Transaction transaction = Transaction.builder()

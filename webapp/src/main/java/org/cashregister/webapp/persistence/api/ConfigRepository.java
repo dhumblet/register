@@ -12,6 +12,6 @@ public interface ConfigRepository extends GenericRepository<Config> {
 
     void setConfigForKey(String key, String value, Merchant merchant);
 
-    Config getConfigForKey(String key, Merchant merchant);
+    Config getConfigForKey(String key, Long merchantId);
 
 }

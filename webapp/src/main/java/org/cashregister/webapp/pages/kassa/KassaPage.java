@@ -103,7 +103,7 @@ public class KassaPage extends SecureTemplatePage {
     @Override
     public void onInitialize() {
         super.onInitialize();
-        model = Model.of(new KassaModel());
+        model = Model.of(new KassaModel(getMerchantId()));
         productsModel = Model.of(new ProductsModel());
         productModel = Model.of(new Product());
         paymentType = Model.of(CASH);

@@ -23,22 +23,15 @@ public class ConfigServiceImpl implements ConfigService {
     private ConfigRepository configRepository;
 
     @Transactional
-    public BigDecimal electronicPaymentLimit() {
-        String configValue = configRepository.getConfigForKey(ELECTRONIC_PAYMENT_LIMIT, merchant()).value();
+    public BigDecimal electronicPaymentLimitForMerchant(Long merchantId) {
+        String configValue = configRepository.getConfigForKey(ELECTRONIC_PAYMENT_LIMIT, merchantId).value();
         return new BigDecimal(configValue);
     }
 
     @Transactional
-    public BigDecimal electronicPaymentCost() {
-        String configValue = configRepository.getConfigForKey(ELECTRONIC_PAYMENT_COST, merchant()).value();
+    public BigDecimal electronicPaymentCostForMerchant(Long merchantId) {
+        String configValue = configRepository.getConfigForKey(ELECTRONIC_PAYMENT_COST, merchantId).value();
         return new BigDecimal(configValue);
     }
 
-    private Merchant merchant() {
-        RegisterSession session = CashRegisterApplication.session();
-        if (session == null) {
-            System.out.println("SESSION EMPTY!");
-        }
-        return session.merchant();
-    }
 }

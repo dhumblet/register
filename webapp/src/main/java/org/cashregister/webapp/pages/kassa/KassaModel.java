@@ -16,8 +16,11 @@ public class KassaModel implements Serializable {
     private String product;
     private List<RowItem> items = new ArrayList<>();
     private BigDecimal paymentCost = BigDecimal.ZERO;
+    private Long merchantId;
 
-    public KassaModel() { }
+    public KassaModel(Long merchantId) {
+        this.merchantId = merchantId;
+    }
 
     public String getProduct() {
         return product;
@@ -80,8 +83,8 @@ public class KassaModel implements Serializable {
 
     public void checkPaymentCost(ConfigService configService) {
         removePaymentCost();
-        if (getTotal().compareTo(configService.electronicPaymentLimit()) < 0) {
-            paymentCost = configService.electronicPaymentCost();
+        if (getTotal().compareTo(configService.electronicPaymentLimitForMerchant(merchantId)) < 0) {
+            paymentCost = configService.electronicPaymentCostForMerchant(merchantId);
         }
     }
 

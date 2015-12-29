@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  */
 public interface ConfigService {
 
-    BigDecimal electronicPaymentLimit();
-    BigDecimal electronicPaymentCost();
+    BigDecimal electronicPaymentLimitForMerchant(Long merchantId);
+    BigDecimal electronicPaymentCostForMerchant(Long merchantId);
 
 }
