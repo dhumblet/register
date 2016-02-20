@@ -6,7 +6,7 @@
         <form id="inputForm" wicket:id="input-form">
         <span wicket:id="feedback"></span>
         <!-- INPUT -->
-        <div class="col-lg-2">
+        <div class="col-lg-2 non-printable">
             <!-- CATEGORY BUTTONS -->
             <div class="form-group">
                 <button wicket:id="categoryButtons" type="button">
@@ -26,7 +26,7 @@
         </div>
 
         <!-- ITEMS TABEL -->
-        <div class="col-lg-9" style="position: relative;">
+        <div class="col-lg-9 non-printable" style="position: relative;">
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-hover" style="margin-bottom: 0px;">
                     <thead>
@@ -74,6 +74,39 @@
             </button>
         </div>
         </form>
+
+
+
+        <!-- PRINTABLE TABEL -->
+        <div class="col-lg-9 only-printable" style="position: relative;">
+            <div class="table-responsive">
+                <span wicket:id="saleTime"/>
+                <table class="table table-striped table-bordered table-hover" wicket:id="printableItems" >
+                    <thead>
+                    <tr>
+                        <th><wicket:message key="table.header.amount"/></th>
+                        <th><wicket:message key="table.header.product"/></th>
+                        <th><wicket:message key="table.header.price"/></th>
+                        <th><wicket:message key="table.header.total"/></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr wicket:id="printableProductRow">
+                        <td><label wicket:id="productCount"/></td>
+                        <td><label wicket:id="productName"/></td>
+                        <td><label wicket:id="productPrice"/></td>
+                        <td><label wicket:id="productTotal"/></td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td><label wicket:id="saleTotal"/></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
 
     </div>
 

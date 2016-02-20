@@ -60,6 +60,9 @@ import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import static org.cashregister.domain.Transaction.Payment.CASH;
 import static org.cashregister.domain.Transaction.Payment.CARD;
@@ -80,7 +83,7 @@ public class KassaPage extends SecureTemplatePage {
     private Form form;
     private TextField productInput;
     private NumberTextField categoryAmountField, totalAmountField;
-    private WebMarkupContainer items, categoryAmountModal, totalAmountModal;
+    private WebMarkupContainer items, categoryAmountModal, totalAmountModal, printableItems;
     private ShortcutBehavior shortcutBehavior;
     private BigDecimal categoryAmount, totalInputAmount, returnAmount;
     private AjaxButton payButton;
@@ -116,6 +119,7 @@ public class KassaPage extends SecureTemplatePage {
 
         initForm();
         initRowItems();
+        initPrintableItems();
         initTotal();
         initAmountModal();
         initTotalModal();
@@ -276,7 +280,6 @@ public class KassaPage extends SecureTemplatePage {
     /* Table containing all products & categories of this order */
     private void initRowItems() {
         items = new WebMarkupContainer("items");
-
         ListView itemsListView = new ListView<RowItem>("productRow", model.getObject().getItems()) {
             @Override
             protected void populateItem(final ListItem<RowItem> item) {
@@ -328,6 +331,25 @@ public class KassaPage extends SecureTemplatePage {
         truckHeader.setVisible(getRegisterSession().getUser().getMerchant().isTruck());
         form.add(truckHeader.setOutputMarkupId(true));
         form.add(items.setOutputMarkupId(true));
+    }
+
+    /* Table containing all products & categories of this order in a prinatble format */
+    private void initPrintableItems() {
+        printableItems = new WebMarkupContainer("printableItems");
+        ListView itemsListView = new ListView<RowItem>("printableProductRow", model.getObject().getItems()) {
+            @Override
+            protected void populateItem(final ListItem<RowItem> item) {
+                final RowItem row = item.getModel().getObject();
+                item.add(new Label("productCount", new PropertyModel(item.getModel(), "amount")));
+                item.add(new Label("productName", new PropertyModel(item.getModel(), "name")));
+                item.add(new CurrencyLabel("productPrice", new PropertyModel(item.getModel(), "price")));
+                item.add(new CurrencyLabel("productTotal", new PropertyModel(item.getModel(), "total")));
+            }
+        };
+        printableItems.add(itemsListView.setOutputMarkupId(true));
+        printableItems.add(new CurrencyLabel("saleTotal", new PropertyModel(model, "total")));
+        container.add(printableItems.setOutputMarkupId(true));
+        container.add(new Label("saleTime", Model.of(getDate())));
     }
 
     /* Create total button*/
@@ -665,6 +687,10 @@ public class KassaPage extends SecureTemplatePage {
             return false;
         }
         return true;
+    }
+
+    private String getDate() {
+        return (new SimpleDateFormat("EEEE d MMMM yyyy", new Locale("nl", "BE"))).format(new Date());
     }
 
     private void focus(AjaxRequestTarget target, String id) {
