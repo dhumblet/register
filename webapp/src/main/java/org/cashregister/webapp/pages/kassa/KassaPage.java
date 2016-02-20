@@ -52,6 +52,8 @@ import org.cashregister.webapp.service.api.ProductService;
 import org.cashregister.webapp.service.api.TransactionService;
 import org.cashregister.webapp.util.BigDecimalHelper;
 import org.cashregister.webapp.util.ProductHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.ObjectOutputStream;
@@ -66,6 +68,7 @@ import static org.cashregister.domain.Transaction.Payment;
  * Created by derkhumblet on 10/11/14.
  */
 public class KassaPage extends SecureTemplatePage {
+    private static final Logger LOG = LoggerFactory.getLogger(KassaPage.class);
     @SpringBean public CategoryService categoryService;
     @SpringBean public ProductService productService;
     @SpringBean public TransactionService transactionService;
@@ -135,7 +138,7 @@ public class KassaPage extends SecureTemplatePage {
             public void onSubmit() {
                 super.onSubmit();
                 showProductModal = false;
-                String input = productInput.getValue();//model.getObject().product();
+                String input = productInput.getValue();
                 if (ProductHelper.isProduct(input)) {
                     try {
                         Product product = productService.findProduct(input, getMerchantId(), true);
@@ -149,7 +152,7 @@ public class KassaPage extends SecureTemplatePage {
                     } catch (Exception e) {
                         productNotFound();
                     }
-                    model.getObject().setProduct(null);
+                    model.getObject().clearProduct();
                 } else {
                     productInput.setModel(Model.of(""));
                 }
@@ -371,27 +374,48 @@ public class KassaPage extends SecureTemplatePage {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
-                String input = model.getObject().getProduct().replace("\n", "");
-                if (ProductHelper.isCategory(input)) {
-                    Category category = categoryService.findCategory(input, getMerchantId());
-                    if (category != null && categoryAmount != null && BigDecimalHelper.isNotZero(categoryAmount)) {
-                        model.getObject().add(category, categoryAmount);
-                        model.getObject().setProduct(null);
-                        productInput.clearInput();
-                        productInput.setModel(Model.of(""));
-                        categoryAmount = null;
-                        categoryAmountField.clearInput();
-                        target.add(container, categoryAmountModal);
-                        target.appendJavaScript(Modal.hide(categoryAmountModal));
-                    } else if (category == null) {
-                        categoryForm.error(getString("error.product_not_found"));
-                        target.add(categoryForm);
+                try {
+                    String input = model.getObject().getProduct().replace("\n", "");
+                    if (ProductHelper.isCategory(input)) {
+                        Category category = categoryService.findCategory(input, getMerchantId());
+                        if (category != null && categoryAmount != null && BigDecimalHelper.isNotZero(categoryAmount)) {
+                            model.getObject().add(category, categoryAmount);
+                            model.getObject().clearProduct();
+                            productInput.clearInput();
+                            productInput.setModel(Model.of(""));
+                            categoryAmount = null;
+                            categoryAmountField.clearInput();
+                            target.add(container, categoryAmountModal);
+                            target.appendJavaScript(Modal.hide(categoryAmountModal));
+                        } else if (category == null) {
+                            categoryForm.error(getString("error.product_not_found"));
+                            target.add(categoryForm);
+                        } else {
+                            categoryForm.error(getString("error.invalid_amount"));
+                            target.add(categoryForm);
+                        }
                     } else {
-                        categoryForm.error(getString("error.invalid_amount"));
-                        target.add(categoryForm);
+                        form.error(getString("error.product_not_found"));
                     }
-                } else {
+                } catch (NullPointerException npe) {
+                    // TODO find out how she gets in this flow
                     form.error(getString("error.product_not_found"));
+                    target.add(categoryForm);
+                    LOG.error("Something when wrong when adding a category.");
+                    if (model == null) {
+                        LOG.error("model == null");
+                    } else if (model.getObject() == null) {
+                        LOG.error("model.getObject == null (for model = " + model + ")");
+                    } else if (model.getObject().getProduct() == null) {
+                        LOG.error("model.getObject.getProduct == null (for model = " + model + " and object = "+model.getObject()+")");
+                    } else {
+                        LOG.error("something was null (for model = " + model + " and object = "+model.getObject()+" and product = "+model.getObject().getProduct()+")");
+                    }
+
+                    categoryAmount = null;
+                    categoryAmountField.clearInput();
+                    target.add(container, categoryAmountModal);
+                    target.appendJavaScript(Modal.hide(categoryAmountModal));
                 }
             }
         };
@@ -399,7 +423,7 @@ public class KassaPage extends SecureTemplatePage {
             @Override
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
-                model.getObject().setProduct(null);
+                model.getObject().clearProduct();
                 productInput.clearInput();
                 productInput.setModel(Model.of(""));
                 categoryAmount = null;
@@ -491,7 +515,7 @@ public class KassaPage extends SecureTemplatePage {
             protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
                 super.onSubmit(target, form);
                 model.getObject().removePaymentCost();
-                model.getObject().setProduct(null);
+                model.getObject().clearProduct();
                 target.add(container, totalAmountModal);
                 target.appendJavaScript(Modal.hide(totalAmountModal));
             }

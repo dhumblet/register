@@ -30,6 +30,10 @@ public class KassaModel implements Serializable {
         this.product = product;
     }
 
+    public void clearProduct() {
+        this.product = null;
+    }
+
     public List<RowItem> getItems() {
         return items;
     }
