@@ -6,12 +6,12 @@
     <artifactId>parent</artifactId>
     <packaging>pom</packaging>
     <name>parent</name>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
 
     <parent>
         <groupId>register</groupId>
         <artifactId>register</artifactId>
-        <version>1.4</version>
+        <version>1.5</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
