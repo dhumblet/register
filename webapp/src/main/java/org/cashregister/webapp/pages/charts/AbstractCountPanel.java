@@ -2,7 +2,6 @@ package org.cashregister.webapp.pages.charts;
 
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.IModel;
-import org.cashregister.webapp.util.DateHelper;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.slf4j.Logger;
@@ -22,13 +21,14 @@ public abstract class AbstractCountPanel extends AbstractChartJsPanel {
     private static final long ONE_MONTH = 32;
     private static final long SIX_MONTHS = 183;
     private static final long FIVE_YEARS = 1826;
+    protected WebMarkupContainer container;
     private final Locale locale;
     protected IModel<Date> startDate;
     protected IModel<Date> endDate;
     protected long merchantId;
 
-    public AbstractCountPanel(String id, long merchantId, IModel<Date> startDate, IModel<Date> endDate, Locale locale) {
-        super(id);
+    public AbstractCountPanel(String id, long merchantId, IModel<Date> startDate, IModel<Date> endDate, int colorScheme, Locale locale) {
+        super(id, colorScheme);
         this.locale = locale;
         initPanel();
         this.startDate = startDate;
@@ -38,7 +38,7 @@ public abstract class AbstractCountPanel extends AbstractChartJsPanel {
 
     private void initPanel() {
         setOutputMarkupId(true);
-        WebMarkupContainer container = new WebMarkupContainer(getName());
+        container = new WebMarkupContainer(getName());
         container.setOutputMarkupId(true);
         add(container);
     }

@@ -13,9 +13,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public abstract class AbstractChartJsPanel extends Panel {
+	private int colorScheme;
 
-	public AbstractChartJsPanel(String id) {
+	public AbstractChartJsPanel(String id, int colorScheme) {
 		super(id);
+		this.colorScheme = colorScheme;
 	}
 
 	@Override
@@ -56,25 +58,65 @@ public abstract class AbstractChartJsPanel extends Panel {
 	private String getLineData() {
 		StringBuilder sb = new StringBuilder();
 		StringBuilder labels = new StringBuilder();
-		StringBuilder values = new StringBuilder();
-		for (Map.Entry<String, Float> entry : getData().entrySet()) {
+		StringBuilder mainValues = new StringBuilder();
+		StringBuilder secondaryValues = new StringBuilder();
+		for (Map.Entry<String, Float> entry : getMainData().entrySet()) {
 			labels.append("\"").append(entry.getKey()).append("\"").append(", ");
-			values.append(entry.getValue()).append(", ");
+			mainValues.append(entry.getValue()).append(", ");
 		}
+		for (Map.Entry<String, Float> entry : getSecondaryData().entrySet()) {
+			secondaryValues.append(entry.getValue()).append(", ");
+		}
+
 
 		sb.append("\nlabels : [").append(labels).append("],")
 			.append("\ndatasets : [")
 			.append("\n\t{")
-				.append("\n\t\tfillColor : \"#94C3EA\",")
-				.append("\n\t\tstrokeColor : \"#428bca\",")
-				.append("\n\t\tpointColor : \"#428bca\",")
+				.append("\n\t\tfillColor : \"").append(getMainFillColor()).append("\",")
+				.append("\n\t\tstrokeColor : \"").append(getMainStrokeColor()).append("\",")
+				.append("\n\t\tpointColor : \"").append(getMainStrokeColor()).append("\",")
 				.append("\n\t\tpointStrokeColor : \"#FFFFFF\",")
 				.append("\n\t\tpointHighlightFill : \"#FFFFFF\",")
-				.append("\n\t\tpointHighlightStroke : \"#0D8BAA\",")
-				.append("\n\t\tdata : [").append(values).append("]")
-				.append("\n\t}")
-				.append("\n]");
+				.append("\n\t\tpointHighlightStroke : \"").append(getMainHighlightStroke()).append("\",")
+				.append("\n\t\tdata : [").append(mainValues).append("]")
+				.append("\n\t}");
+			if (secondaryValues.length() > 0) {
+				sb.append(",\n\t{\n\t\tfillColor : \"#eabb94\",")
+						.append("\n\t\tstrokeColor : \"#ca8142\",")
+						.append("\n\t\tpointColor : \"#ca8142\",")
+						.append("\n\t\tpointStrokeColor : \"#FFFFFF\",")
+						.append("\n\t\tpointHighlightFill : \"#FFFFFF\",")
+						.append("\n\t\tpointHighlightStroke : \"#aa2c0d\",")
+						.append("\n\t\tdata : [").append(secondaryValues).append("]")
+						.append("\n\t}");
+			}
+		sb.append("\n]");
+
 		return sb.toString();
+	}
+
+	private String getMainFillColor() {
+		switch (colorScheme) {
+			default:
+			case 0: return "#94C3EA";
+			case 1: return "#eabb94";
+		}
+	}
+
+	private String getMainStrokeColor() {
+		switch (colorScheme) {
+			default:
+			case 0: return "#428bca";
+			case 1: return "#ca8142";
+		}
+	}
+
+	private String getMainHighlightStroke() {
+		switch (colorScheme) {
+			default:
+			case 0: return "#0D8BAA";
+			case 1: return "#aa2c0d";
+		}
 	}
 
 	private String getDataFooter() {
@@ -146,7 +188,7 @@ public abstract class AbstractChartJsPanel extends Panel {
 	}
 
 	private Map<String, Float> getDataSorted() {
-		Map<String, Float> data = getData();
+		Map<String, Float> data = getMainData();
 
 		ValueComparableMap<String, Float> valueComparableMap = new ValueComparableMap<String, Float>(Ordering.<Float>natural().reverse());
 		valueComparableMap.putAll(data);
@@ -159,9 +201,14 @@ public abstract class AbstractChartJsPanel extends Panel {
 	protected abstract ChartType getChartType();
 
 	/**
-	 * @return a map of the data that needs to be displayed.
+	 * @return a map of the main data that needs to be displayed.
 	 */
-	protected abstract Map<String, Float> getData();
+	protected abstract Map<String, Float> getMainData();
+
+	/**
+	 * @return a map of the secondary data that needs to be displayed.
+	 */
+	protected abstract Map<String, Float> getSecondaryData();
 
 	/**
 	 * @return a unique name to identify this javascript variable.

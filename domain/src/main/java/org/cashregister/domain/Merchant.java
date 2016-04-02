@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Created by derkhumblet on 11/01/15.
@@ -16,10 +17,16 @@ public class Merchant extends GenericEntity implements Serializable {
     @Column(name = "truck", nullable = false)
     private boolean truck;
 
-    public Merchant() { }
+    @Column(name = "uuid")
+    private String uuid;
+
+    public Merchant() {
+        this.uuid = UUID.randomUUID().toString();
+    }
 
     public Merchant(String name) {
         this.name = name;
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public String getName() {
@@ -36,5 +43,13 @@ public class Merchant extends GenericEntity implements Serializable {
 
     public void setTruck(boolean truck) {
         this.truck = truck;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

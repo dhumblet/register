@@ -1,8 +1,6 @@
 package org.cashregister.common.ws;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
-import javax.xml.bind.annotation.XmlRootElement;
+
 
 /**
  * Created by derkhumblet on 16/12/15.

@@ -31,8 +31,9 @@ import java.util.List;
 public class StatisticsPage extends SecureTemplatePage {
     private WebMarkupContainer container;
     private IModel<Date> startDate, endDate;
-    private AjaxLazyLoadPanel customerChartPanel, saleTurnoverPanel;
+    private AjaxLazyLoadPanel customerChartPanel, saleTurnoverPanel, categoryTurnoverPanel;
     @SpringBean private StatisticsRepository repo;
+
 
     public StatisticsPage() {}
 
@@ -49,7 +50,7 @@ public class StatisticsPage extends SecureTemplatePage {
         initDates();
         addCustomerCount();
         addSaleTurnover();
-
+        addCategoryTurnover();
         add(container.setOutputMarkupId(true));
     }
 
@@ -147,6 +148,8 @@ public class StatisticsPage extends SecureTemplatePage {
         container.add(shortcutsForm.setOutputMarkupId(true));
     }
 
+
+
     private void addCustomerCount() {
         boolean replace = customerChartPanel != null;
 
@@ -178,6 +181,23 @@ public class StatisticsPage extends SecureTemplatePage {
             container.replace(saleTurnoverPanel);
         } else {
             container.add(saleTurnoverPanel);
+        }
+    }
+
+    private void addCategoryTurnover() {
+        boolean replace = categoryTurnoverPanel != null;
+
+        categoryTurnoverPanel = new ChartjsAjaxLazyLoadPanel("categoryTurnoverView") {
+            @Override
+            public Component doGetLazyLoadComponent(String id) {
+                return new CategoryTurnoverPanel(id, repo, getRegisterSession().getUser().getMerchant().getId(), startDate, endDate, getMerchantId(), getRegisterSession().getLocale());
+            }
+        };
+
+        if (replace) {
+            container.replace(categoryTurnoverPanel);
+        } else {
+            container.add(categoryTurnoverPanel);
         }
     }
 

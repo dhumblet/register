@@ -1,5 +1,6 @@
 package org.cashregister.webapp.pages.statistics;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.wicket.model.IModel;
 import org.cashregister.webapp.pages.charts.AbstractCountPanel;
 import org.cashregister.webapp.pages.charts.TimeGrouper;
@@ -16,7 +17,7 @@ public class CustomerCountPanel extends AbstractCountPanel {
     private StatisticsRepository repository;
 
     public CustomerCountPanel(String id, StatisticsRepository repo, long merchantid, IModel<Date> startDate, IModel<Date> endDate, Locale locale) {
-        super(id, merchantid, startDate, endDate, locale);
+        super(id, merchantid, startDate, endDate, 0, locale);
         setOutputMarkupId(true);
         this.repository = repo;
     }
@@ -27,12 +28,17 @@ public class CustomerCountPanel extends AbstractCountPanel {
     }
 
     @Override
-    protected Map<String, Float> getData() {
+    protected Map<String, Float> getMainData() {
         TimeGrouper grouper = calculateGroupByTime();
         Map<String, Float> customerCounts = repository.getCustomerCount(merchantId,
                 startDate.getObject(),
                 endDate.getObject(),
                 grouper);
         return fillMissingDatesFloat(customerCounts, grouper);
+    }
+
+    @Override
+    protected Map<String, Float> getSecondaryData() {
+        return new HashedMap();
     }
 }

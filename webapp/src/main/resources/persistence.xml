@@ -16,6 +16,7 @@
         <class>org.cashregister.domain.Role</class>
         <class>org.cashregister.domain.OverviewLine</class>
         <class>org.cashregister.domain.Config</class>
+        <class>org.cashregister.domain.Token</class>
         <properties>
             <property name="hibernate.dialect" value="org.cashregister.webapp.util.MySQL5InnoDBUTF8Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>
