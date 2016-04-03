@@ -82,7 +82,7 @@ public class CategoryTurnoverPanel extends AbstractCountPanel {
         Map<String, Float> categorySaleTurnover = null;
         if (selectedCategory.getObject() != null && selectedCategory.getObject().getId() != null) {
             // Get sale turnover data per category
-            categorySaleTurnover = repository.getSaleTurnover(merchantId, selectedCategory.getObject().getId(), startDate.getObject(), endDate.getObject(), grouper);
+            categorySaleTurnover = repository.getCategoryTurnover(merchantId, selectedCategory.getObject().getId(), startDate.getObject(), endDate.getObject(), grouper);
         } else {
             categorySaleTurnover = new HashMap<>();
         }
@@ -91,6 +91,14 @@ public class CategoryTurnoverPanel extends AbstractCountPanel {
 
     @Override
     protected Map<String, Float> getSecondaryData() {
-        return new HashMap();
+        TimeGrouper grouper = calculateGroupByTime();
+        Map<String, Float> categorySaleTurnover = null;
+        if (selectedCategory.getObject() != null && selectedCategory.getObject().getId() != null) {
+            // Get sale turnover data per category
+            categorySaleTurnover = repository.getCategoryTransactionCount(merchantId, selectedCategory.getObject().getId(), startDate.getObject(), endDate.getObject(), grouper);
+        } else {
+            categorySaleTurnover = new HashMap<>();
+        }
+        return fillMissingDatesFloat(categorySaleTurnover, grouper);
     }
 }

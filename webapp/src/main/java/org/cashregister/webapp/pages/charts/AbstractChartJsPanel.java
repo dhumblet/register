@@ -81,12 +81,12 @@ public abstract class AbstractChartJsPanel extends Panel {
 				.append("\n\t\tdata : [").append(mainValues).append("]")
 				.append("\n\t}");
 			if (secondaryValues.length() > 0) {
-				sb.append(",\n\t{\n\t\tfillColor : \"#eabb94\",")
-						.append("\n\t\tstrokeColor : \"#ca8142\",")
-						.append("\n\t\tpointColor : \"#ca8142\",")
+				sb.append(",\n\t{\n\t\tfillColor : \"").append(getSecondaryFillColor()).append("\",")
+						.append("\n\t\tstrokeColor : \"").append(getSecondaryStrokeColor()).append("\",")
+						.append("\n\t\tpointColor : \"").append(getSecondaryStrokeColor()).append("\",")
 						.append("\n\t\tpointStrokeColor : \"#FFFFFF\",")
 						.append("\n\t\tpointHighlightFill : \"#FFFFFF\",")
-						.append("\n\t\tpointHighlightStroke : \"#aa2c0d\",")
+						.append("\n\t\tpointHighlightStroke : \"").append(getSecondaryHighlightStroke()).append("\",")
 						.append("\n\t\tdata : [").append(secondaryValues).append("]")
 						.append("\n\t}");
 			}
@@ -116,6 +116,30 @@ public abstract class AbstractChartJsPanel extends Panel {
 			default:
 			case 0: return "#0D8BAA";
 			case 1: return "#aa2c0d";
+		}
+	}
+
+	private String getSecondaryFillColor() {
+		switch (colorScheme) {
+			default:
+			case 0: return "#eabb94";
+			case 1: return "#94E9BB";
+		}
+	}
+
+	private String getSecondaryStrokeColor() {
+		switch (colorScheme) {
+			default:
+			case 0: return "#ca8142";
+			case 1: return "#42C980";
+		}
+	}
+
+	private String getSecondaryHighlightStroke() {
+		switch (colorScheme) {
+			default:
+			case 0: return "#aa2c0d";
+			case 1: return "#0DAA2C";
 		}
 	}
 

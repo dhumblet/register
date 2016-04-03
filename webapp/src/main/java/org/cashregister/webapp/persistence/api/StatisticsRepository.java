@@ -36,5 +36,16 @@ public interface StatisticsRepository {
      * @param grouper
      * @return sum of transaction prices for $category per time interval (defined by $grouper) for $merchant between $start and $end.
      */
-    Map<String, Float> getSaleTurnover(long merchant, long category, Date start, Date end, TimeGrouper grouper);
+    Map<String, Float> getCategoryTurnover(long merchant, long category, Date start, Date end, TimeGrouper grouper);
+
+    /**
+     * @param merchant
+     * @param category
+     * @param start
+     * @param end
+     * @param grouper
+     * @return count of transactions for $catgory per time interval (defined by $grouper) for $merchant between $start and $end.
+     */
+    Map<String, Float> getCategoryTransactionCount(long merchant, long category, Date start, Date end, TimeGrouper grouper);
+
 }

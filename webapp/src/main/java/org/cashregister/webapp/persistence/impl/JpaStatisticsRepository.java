@@ -52,9 +52,21 @@ public class JpaStatisticsRepository implements StatisticsRepository, Statistics
     }
 
     @Override @Transactional
-    public Map<String, Float> getSaleTurnover(long merchant, long category, Date start, Date end, TimeGrouper grouper) {
+    public Map<String, Float> getCategoryTurnover(long merchant, long category, Date start, Date end, TimeGrouper grouper) {
         // Execute query
         Query query = entityManager.createNativeQuery(SALE_TURNOVER_PER_CATEGORY_QUERY);
+        query.setParameter(1, grouper.getGroupByTime());
+        query.setParameter(2, merchant);
+        query.setParameter(3, start);
+        query.setParameter(4, end);
+        query.setParameter(5, category);
+        List<Object[]> queryResults = query.getResultList();
+        return mapResultsDecimal(queryResults);
+    }
+
+    @Override @Transactional
+    public Map<String, Float> getCategoryTransactionCount(long merchant, long category, Date start, Date end, TimeGrouper grouper) {
+        Query query = entityManager.createNativeQuery(CATEGORY_COUNT_QUERY);
         query.setParameter(1, grouper.getGroupByTime());
         query.setParameter(2, merchant);
         query.setParameter(3, start);
