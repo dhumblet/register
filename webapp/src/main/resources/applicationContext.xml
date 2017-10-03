@@ -18,9 +18,11 @@
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <!-- OpenShift -->
-        <property name="location" value="environment.openshift.properties"/>
+        <!--<property name="location" value="environment.openshift.properties"/>-->
         <!-- Local -->
         <!--<property name="location" value="environment.local.properties"/>-->
+        <!--Heroku-->
+        <property name="location" value="environment.heroku.properties"/>
     </bean>
 
     <!-- DATABASE -->
