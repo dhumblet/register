@@ -2,6 +2,7 @@ package org.cashregister.webapp.service;
 
 import junit.framework.Assert;
 import org.cashregister.domain.Merchant;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MerchantServiceTest extends AbstractServiceTest {
 
     @Test @Transactional
+    @Ignore
     public void createMerchantTest() {
         String name = "Test Merchant";
         Merchant m = merchantService.createMerchant(name);

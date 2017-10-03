@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Created by derkhumblet on 12/01/15.
  */
+@Ignore
 public class UserServiceTest extends AbstractServiceTest {
 
     @Test @Transactional
