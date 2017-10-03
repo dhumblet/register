@@ -1,1 +1,0 @@
-heroku war:deploy webapp/target/kassa.war --app hhregister
