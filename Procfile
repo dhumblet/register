@@ -1,1 +1,1 @@
-web: java -jar target/register.jar
+web: java -jar target/hhregister.jar
