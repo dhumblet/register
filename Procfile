@@ -1,1 +1,1 @@
-web java -jar webapp-runner.jar ./webapp/target/kassa.war
+web java $JAVA_OPTS -jar webapp-runner.jar ./webapp/target/kassa.war
